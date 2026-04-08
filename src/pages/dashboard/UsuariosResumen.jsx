@@ -2,10 +2,10 @@ import React from 'react';
 import { UsersIcon } from '@heroicons/react/24/outline';
 
 const UsuariosResumen = ({ datos }) => (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
-            <UsersIcon className="w-4 h-4 text-sky-500" />
-            <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
+            <UsersIcon className="w-4 h-4 text-sky-500 shrink-0" />
+            <p className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">
                 Usuarios por rol
             </p>
         </div>
@@ -18,16 +18,18 @@ const UsuariosResumen = ({ datos }) => (
                     const pct = d.total > 0 ? Math.round((d.activos / d.total) * 100) : 0;
                     return (
                         <div key={d.rol}>
-                            <div className="flex justify-between items-center mb-1.5">
-                                <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">
+                            <div className="flex justify-between items-center mb-1.5 gap-2">
+                                <span className="text-xs font-bold text-slate-700 uppercase tracking-wide truncate">
                                     {d.rol}
                                 </span>
-                                <div className="flex items-center gap-2 text-xs">
-                                    <span className="text-emerald-600 font-black">
+                                <div className="flex items-center gap-2 text-xs shrink-0">
+                                    <span className="text-emerald-600 font-black whitespace-nowrap">
                                         {d.activos} activos
                                     </span>
                                     {d.inactivos > 0 && (
-                                        <span className="text-slate-400">{d.inactivos} inactivos</span>
+                                        <span className="text-slate-400 whitespace-nowrap">
+                                            {d.inactivos} inact.
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -38,7 +40,7 @@ const UsuariosResumen = ({ datos }) => (
                                 />
                             </div>
                             <p className="text-[10px] text-slate-400 mt-1 text-right">
-                                {pct}% activos · {d.total} en total
+                                {pct}% activos · {d.total} total
                             </p>
                         </div>
                     );

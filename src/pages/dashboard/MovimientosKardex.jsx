@@ -7,10 +7,10 @@ const OPERACION_STYLE = {
 };
 
 const MovimientosKardex = ({ datos }) => (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
-            <CubeIcon className="w-4 h-4 text-violet-500" />
-            <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
+            <CubeIcon className="w-4 h-4 text-violet-500 shrink-0" />
+            <p className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">
                 Movimientos de almacén
             </p>
         </div>
@@ -18,11 +18,11 @@ const MovimientosKardex = ({ datos }) => (
         {(!datos || datos.length === 0) ? (
             <p className="text-sm text-slate-400 text-center py-8">Sin movimientos en el período</p>
         ) : (
-            <div className="overflow-x-auto">
-                <table className="w-full text-xs">
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                <table className="w-full text-xs" style={{ minWidth: '420px' }}>
                     <thead>
                         <tr className="border-b border-slate-100">
-                            <th className="text-left text-slate-400 font-bold uppercase tracking-wider pb-2 pr-3">Movimiento</th>
+                            <th className="text-left text-slate-400 font-bold uppercase tracking-wider pb-2 pr-3 whitespace-nowrap">Movimiento</th>
                             <th className="text-left text-slate-400 font-bold uppercase tracking-wider pb-2 pr-3">Op.</th>
                             <th className="text-left text-slate-400 font-bold uppercase tracking-wider pb-2 pr-3">Insumo</th>
                             <th className="text-left text-slate-400 font-bold uppercase tracking-wider pb-2 pr-3">Almacén</th>
@@ -37,20 +37,20 @@ const MovimientosKardex = ({ datos }) => (
                                     {d.movimiento}
                                 </td>
                                 <td className="py-2.5 pr-3">
-                                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${OPERACION_STYLE[d.operacion] || 'bg-slate-100 text-slate-600'}`}>
+                                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase whitespace-nowrap ${OPERACION_STYLE[d.operacion] || 'bg-slate-100 text-slate-600'}`}>
                                         {d.operacion}
                                     </span>
                                 </td>
-                                <td className="py-2.5 pr-3 text-slate-700 max-w-[140px] truncate" title={d.insumo}>
+                                <td className="py-2.5 pr-3 text-slate-700 max-w-[120px] truncate" title={d.insumo}>
                                     {d.insumo}
                                 </td>
-                                <td className="py-2.5 pr-3 text-slate-500 whitespace-nowrap">
+                                <td className="py-2.5 pr-3 text-slate-500 whitespace-nowrap max-w-[80px] truncate">
                                     {d.almacen}
                                 </td>
-                                <td className="py-2.5 pr-3 text-right font-black text-slate-800">
+                                <td className="py-2.5 pr-3 text-right font-black text-slate-800 whitespace-nowrap">
                                     {Number(d.cantidad).toLocaleString('es-PE', { maximumFractionDigits: 2 })}
                                 </td>
-                                <td className="py-2.5 text-right text-slate-500">
+                                <td className="py-2.5 text-right text-slate-500 whitespace-nowrap">
                                     {Number(d.saldo).toLocaleString('es-PE', { maximumFractionDigits: 2 })}
                                 </td>
                             </tr>

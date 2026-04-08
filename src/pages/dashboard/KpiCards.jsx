@@ -26,14 +26,20 @@ const KpiCard = ({ icon: Icon, label, value, sub, color }) => {
     const c = colors[color] || colors.indigo;
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-start gap-4">
-            <div className={`p-3 rounded-xl border ${c.bg} ${c.border} shrink-0`}>
-                <Icon className={`w-5 h-5 ${c.icon}`} />
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 md:p-5 flex items-start gap-3 min-w-0">
+            <div className={`p-2 md:p-3 rounded-xl border ${c.bg} ${c.border} shrink-0`}>
+                <Icon className={`w-4 h-4 md:w-5 md:h-5 ${c.icon}`} />
             </div>
-            <div className="min-w-0">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest truncate">{label}</p>
-                <p className="text-2xl font-black text-slate-800 leading-tight mt-0.5">{value}</p>
-                {sub && <p className="text-xs text-slate-500 mt-1">{sub}</p>}
+            <div className="min-w-0 flex-1">
+                <p className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest truncate leading-tight">
+                    {label}
+                </p>
+                <p className="text-lg md:text-2xl font-black text-slate-800 leading-tight mt-0.5 truncate">
+                    {value}
+                </p>
+                {sub && (
+                    <p className="text-[10px] md:text-xs text-slate-500 mt-0.5 truncate">{sub}</p>
+                )}
             </div>
         </div>
     );
@@ -41,28 +47,28 @@ const KpiCard = ({ icon: Icon, label, value, sub, color }) => {
 
 const KpiCards = ({ kpis }) => {
     if (!kpis) return null;
-
     const utilidadPositiva = kpis.utilidad_bruta >= 0;
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        /* 2 columnas en móvil, 3 en md, 6 en xl */
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4">
             <KpiCard
                 icon={BanknotesIcon}
                 label="Total ventas"
                 value={formatSol(kpis.total_ventas)}
-                sub={`${formatNum(kpis.cantidad_ventas)} transacciones`}
+                sub={`${formatNum(kpis.cantidad_ventas)} transacc.`}
                 color="emerald"
             />
             <KpiCard
                 icon={ReceiptPercentIcon}
-                label="Ticket promedio"
+                label="Ticket prom."
                 value={formatSol(kpis.ticket_promedio)}
                 sub="Por venta"
                 color="indigo"
             />
             <KpiCard
                 icon={ShoppingCartIcon}
-                label="Total compras"
+                label="Compras"
                 value={formatSol(kpis.total_compras)}
                 sub="Período actual"
                 color="amber"
@@ -76,14 +82,14 @@ const KpiCards = ({ kpis }) => {
             />
             <KpiCard
                 icon={ClipboardDocumentListIcon}
-                label="Órdenes activas"
+                label="Órdenes act."
                 value={formatNum(kpis.ordenes_activas)}
-                sub="En este momento"
+                sub="Ahora mismo"
                 color="sky"
             />
             <KpiCard
                 icon={CubeIcon}
-                label="Salidas almacén"
+                label="Salidas"
                 value={formatNum(kpis.salidas_almacen)}
                 sub="En el período"
                 color="violet"

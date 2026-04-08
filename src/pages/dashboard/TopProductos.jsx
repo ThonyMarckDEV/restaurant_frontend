@@ -17,13 +17,16 @@ const TopProductos = ({ datos }) => {
     const chart = useRef(null);
 
     useEffect(() => {
-        if (!datos || !ref.current) return;
+        // Guard completo antes de cualquier acceso a datos
+        if (!datos || datos.length === 0 || !ref.current) return;
         if (chart.current) chart.current.destroy();
 
         chart.current = new Chart(ref.current, {
             type: 'bar',
             data: {
-                labels: datos.map(d => d.nombre),
+                labels: datos.map(d =>
+                    d.nombre.length > 16 ? d.nombre.slice(0, 14) + '…' : d.nombre
+                ),
                 datasets: [{
                     label: 'Unidades vendidas',
                     data: datos.map(d => d.total_vendido),
@@ -41,32 +44,34 @@ const TopProductos = ({ datos }) => {
                     x: {
                         grid: { color: 'rgba(0,0,0,0.05)' },
                         beginAtZero: true,
-                        ticks: { font: { size: 11 }, stepSize: 1 },
+                        ticks: { font: { size: 10 }, stepSize: 1 },
                     },
                     y: {
                         grid: { display: false },
-                        ticks: { font: { size: 11 } },
+                        ticks: { font: { size: 10 } },
                     },
                 },
             },
         });
 
-        return () => { if (chart.current) chart.current.destroy(); };
+        return () => {
+            if (chart.current) { chart.current.destroy(); chart.current = null; }
+        };
     }, [datos]);
 
-    const altura = Math.max(200, (datos?.length || 5) * 48 + 60);
+    const altura = Math.max(160, Math.min((datos?.length || 5) * 40 + 40, 320));
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 h-full">
-            <div className="flex items-center gap-2 mb-4">
-                <TrophyIcon className="w-4 h-4 text-amber-500" />
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-5 h-full">
+            <div className="flex items-center gap-2 mb-3 md:mb-4">
+                <TrophyIcon className="w-4 h-4 text-amber-500 shrink-0" />
+                <p className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">
                     Top vendidos
                 </p>
             </div>
 
             {(!datos || datos.length === 0) ? (
-                <div className="flex items-center justify-center h-48 text-slate-400 text-sm">
+                <div className="flex items-center justify-center h-40 text-slate-400 text-sm">
                     Sin datos para el período
                 </div>
             ) : (
