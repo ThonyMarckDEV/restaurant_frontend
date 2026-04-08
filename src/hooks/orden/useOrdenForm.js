@@ -18,7 +18,6 @@ export const useCatalogo = (fetchFn, baseParams = {}) => {
     const load = useCallback(async (p, s) => {
         const params = JSON.parse(strParams);
         
-        // Si estamos en modo venta (insumos) y no hay almacén, limpiamos y no pedimos nada
         if (params.isVentaMode && !params.almacen_id) { 
             setItems([]); 
             setTotalPages(1);
@@ -37,24 +36,30 @@ export const useCatalogo = (fetchFn, baseParams = {}) => {
         }
     }, [fetchFn, strParams]);
 
-    //  Ahora escucha cambios en search Y en los parámetros (categoría/almacén)
+    // Escucha cambios en search o filtros para resetear a página 1
     useEffect(() => {
         clearTimeout(debounce.current);
         debounce.current = setTimeout(() => {
-            setPage(1); // Resetear a página 1 al filtrar
+            setPage(1);
             load(1, search);
         }, 300);
         return () => clearTimeout(debounce.current);
-    }, [search, strParams, load]); // ✅ strParams es la clave
+    }, [search, strParams, load]); 
 
-    // Carga cuando cambia la página
+    // Carga cuando cambia la página (sin debounce)
     useEffect(() => {
         load(page, search);
-    }, [page, load , search]);
+    }, [page, load, search]);
 
-    const goToPage = (p) => setPage(p);
-
-    return { items, loading, page, goToPage, totalPages, search, setSearch: (val) => setSearch(val) };
+    return { 
+        items, 
+        loading, 
+        page, 
+        setPage, // 🔥 Exportamos setPage directamente para que coincida con lo que pides
+        totalPages, 
+        search, 
+        setSearch: (val) => setSearch(val) 
+    };
 };
 
 export const useOrdenForm = ({ cart, setCart, orderConfig, onSave, setAlert }) => {
