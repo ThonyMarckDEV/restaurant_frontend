@@ -155,6 +155,7 @@ const MENU_GROUPS = [
                 subs: [
                     { name: 'Listar', link: '/caja/listar' },
                     { name: 'Agregar', link: '/caja/agregar' },
+                    { name: 'Sesiones', link: '/caja/sesiones/listar' },
                 ],
             },
             { 

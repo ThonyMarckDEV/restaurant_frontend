@@ -61,6 +61,7 @@ export const useUpdate = () => {
             const response = await show(id);
             const data = response.data || response;
 
+            // Si la orden ya fue pagada o anulada, bloqueamos y redirigimos
             if (data.estado === 2 || data.estado === 3) {
                 setIsClosed(true);
                 skipAutoSave.current  = true;
@@ -90,27 +91,8 @@ export const useUpdate = () => {
         }
     }, [id, mapDetallesToCart, navigate]);
 
+    // Carga inicial
     useEffect(() => { fetchOrdenData(true); }, [fetchOrdenData]);
-
-    // Sincronización Real-time (Echo)
-    useEffect(() => {
-        if (!id || !window.Echo || isClosed) return;
-        const channel = window.Echo.channel('ordenes');
-
-        channel.listen('.OrdenActualizada', (e) => {
-            if (Number(e.orden.id) === Number(id)) {
-                if (e.tipo_accion === 'orden_pagada') {
-                    setIsClosed(true);
-                    setAlert({ type: 'info', message: '¡Orden pagada en caja!' });
-                    setTimeout(() => navigate('/orden/llevar', { replace: true }), 1500);
-                    return;
-                }
-                fetchOrdenData(false);
-            }
-        });
-
-        return () => window.Echo.leaveChannel('ordenes');
-    }, [id, fetchOrdenData, navigate, isClosed]);
 
     // Convertir Base64 a Blob
     const base64ToBlob = (base64, type) => {

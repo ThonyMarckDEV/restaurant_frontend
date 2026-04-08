@@ -109,6 +109,7 @@ import VentaStore from 'pages/venta/Store';
 import AgregarCaja from 'pages/caja/Store';
 import EditarCaja from 'pages/caja/Update';
 import ListarCajas from 'pages/caja/Index';
+import ListarCajaSesiones from 'pages/cajaSesion/Index';
 
 // Utilities
 import ProtectedRouteHome from 'utilities/ProtectedRoutes/ProtectedRouteHome';
@@ -301,12 +302,13 @@ function AppContent() {
         </Route>
 
         {/* =======================================================
-              MÓDULO: CAJAS Y VENTAS
+              MÓDULO: CAJAS
         ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin', 'cajero']} />}>
+        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
             <Route path="/caja/agregar" element={<AgregarCaja />} />
             <Route path="/caja/editar/:id" element={<EditarCaja />} />
             <Route path="/caja/listar" element={<ListarCajas />} />
+            <Route path="/caja/sesiones/listar" element={<ListarCajaSesiones />} />
         </Route>
 
         
