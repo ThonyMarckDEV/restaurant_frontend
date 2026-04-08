@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCartIcon, ChevronLeftIcon, UserIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon, UserIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { CartaTab, InsumosTab, AdicionalesTab, MenuTab } from './CatalogoTabs';
 import CartItem from './Cartitem';
 import ClienteSearchSelect from 'components/Shared/Comboboxes/ClienteSearchSelect';
@@ -22,45 +22,52 @@ const OrdenForm = ({ cart, setCart, orderConfig = null, updateConfig, onSave, se
     } = useOrdenForm({ cart, setCart, orderConfig, onSave, setAlert });
 
     const isEditingOrder = cart.some(item => item.id_detalle);
-
     const addFns  = { carta: addPlato, menu: addMenu, insumos: addInsumo, extras: addAdicional };
     const { Tab } = TABS.find(t => t.id === activeTab);
     const sorted  = [...cart].map((item, idx) => ({ item, idx })).sort((a, b) => a.item.estado - b.item.estado);
 
     return (
-        <div className="flex flex-col lg:flex-row gap-3 h-[calc(100vh-240px)] min-h-[450px]">
-          
-            {/* ── Toggle móvil/tablet ── */}
-            <div className="lg:hidden shrink-0 flex rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 p-1 gap-1 mb-2">
+        <div className="flex flex-col lg:flex-row gap-3
+            /* Aumentamos la altura total en móvil de 130px a 70px de margen */
+            h-[calc(100dvh-70px)] min-h-[550px]
+            lg:h-[calc(100vh-240px)] lg:min-h-[450px]">
+
+            {/* ── Toggle catálogo / comanda ── */}
+            <div className="lg:hidden shrink-0 flex rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 p-1 gap-1">
                 <button
                     type="button"
                     onClick={() => setShowCart(false)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-black transition-all ${!showCart ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black transition-all ${!showCart ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
                 >
                     Catálogo
                 </button>
                 <button
                     type="button"
                     onClick={() => setShowCart(true)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-black transition-all relative ${showCart ? 'bg-gray-900 text-white shadow-md' : 'text-gray-400'}`}
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black transition-all relative ${showCart ? 'bg-gray-900 text-white shadow-md' : 'text-gray-400'}`}
                 >
                     Comanda
                     {activeCount > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] font-black rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1 border-2 border-white">
                             {activeCount}
                         </span>
                     )}
                 </button>
             </div>
 
-            {/* Catálogo */}
-            <div className={`w-full lg:w-3/5 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden ${showCart ? 'hidden lg:flex' : 'flex'}`}>
-                <div className="flex border-b border-gray-100 bg-gray-50 shrink-0">
+            {/* ── Panel Catálogo ── */}
+            <div className={`
+                flex-1 min-w-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden
+                ${showCart ? 'hidden lg:flex' : 'flex'}
+            `}>
+                <div className="shrink-0 flex border-b border-gray-100 bg-gray-50">
                     {TABS.map(t => (
-                        <button key={t.id} type="button" onClick={() => setActiveTab(t.id)}
-                            className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wide transition-colors ${activeTab === t.id ? 'bg-white text-gray-900 border-b-2 border-gray-900' : 'text-gray-400 hover:text-gray-600'}`}>
+                        <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => setActiveTab(t.id)}
+                            className={`flex-1 py-4 text-[11px] font-bold uppercase tracking-wide transition-colors ${activeTab === t.id ? 'bg-white text-gray-900 border-b-2 border-gray-900' : 'text-gray-400'}`}
+                        >
                             {t.label}
                         </button>
                     ))}
@@ -70,100 +77,86 @@ const OrdenForm = ({ cart, setCart, orderConfig = null, updateConfig, onSave, se
                 </div>
             </div>
 
-            {/* Comanda */}
-            <div className={`w-full lg:w-2/5 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden ${showCart ? 'flex' : 'hidden lg:flex'}`}>
-                <div className="flex items-center justify-between px-3 py-2.5 bg-gray-900 text-white shrink-0">
+            {/* ── Panel Comanda (Grande en Móvil) ── */}
+            <div className={`
+                w-full lg:w-[340px] xl:w-[380px] shrink-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden
+                /* flex-1 en móvil para que crezca todo lo posible */
+                ${showCart ? 'flex flex-1' : 'hidden lg:flex'}
+            `}>
+                {/* Header Comanda */}
+                <div className="shrink-0 flex items-center justify-center px-4 py-4 bg-gray-900 relative">
                     <div className="flex items-center gap-2">
-                        <ShoppingCartIcon className="w-4 h-4 opacity-70" />
-                        <span className="text-sm font-black">Comanda</span>
-                        {activeCount > 0 && (
-                            <span className="bg-green-500 text-white text-[10px] font-black rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
-                                {activeCount}
-                            </span>
-                        )}
+                        <ShoppingCartIcon className="w-5 h-5 text-white opacity-70" />
+                        <span className="text-base font-black text-white">Tu Comanda</span>
                     </div>
-                    <button type="button" onClick={() => setShowCart(false)}
-                        className="lg:hidden flex items-center gap-1 text-[11px] font-bold text-white/60 hover:text-white">
-                        <ChevronLeftIcon className="w-3.5 h-3.5" /> Volver
-                    </button>
+                    {/* Botón de volver eliminado de aquí por pedido */}
                 </div>
 
-                <div className="p-3 border-b border-gray-200 bg-slate-50 shrink-0 space-y-3">
+                {/* Info pedido */}
+                <div className="shrink-0 p-4 border-b border-gray-100 bg-gray-50 space-y-3">
                     {tipoPedido === 1 ? (
-                        <div className="text-xs font-bold text-indigo-700 flex items-center justify-between gap-2 bg-indigo-50 p-2.5 rounded-lg border border-indigo-100">
+                        <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-sm">
                             <div className="flex items-center gap-2">
                                 <MapPinIcon className="w-5 h-5 text-indigo-500" />
-                                <span className="uppercase tracking-wide">Consumo en Salón</span>
+                                <span className="text-xs font-black text-gray-500 uppercase">Mesa</span>
                             </div>
-                            <span className="font-black text-sm bg-white px-2 py-0.5 rounded shadow-sm">
-                                MESA {mesaNumero ?? '—'}
+                            <span className="text-lg font-black text-indigo-600">
+                                {mesaNumero ?? '—'}
                             </span>
                         </div>
                     ) : (
-                        <div className="text-xs font-bold text-amber-700 flex items-center gap-2 bg-amber-50 p-2.5 rounded-lg border border-amber-100">
+                        <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3">
                             <UserIcon className="w-5 h-5 text-amber-500" />
-                            <span className="uppercase tracking-wide">Pedido Para Llevar</span>
+                            <span className="text-xs font-black text-amber-700 uppercase tracking-wide">Pedido para Llevar</span>
                         </div>
                     )}
 
-                    <div className="flex flex-col gap-2">
-                        <ClienteSearchSelect
-                            onSelect={c => updateConfig('cliente_id', c.id)}
-                            placeholder="Buscar cliente frecuente (opcional)..."
-                            initialName={clienteNombreCompleto}
-                            disabled={!!nombreLlevar || (!onSave && !!clienteId)}
-                        />
-                        {tipoPedido !== 1 && (
-                            <input
-                                type="text"
-                                placeholder="O ingrese nombre para llamar al cliente..."
-                                value={nombreLlevar}
-                                onChange={e => updateConfig('nombre_llevar', e.target.value)}
-                                disabled={!!clienteId || (!onSave && !!nombreLlevar)}
-                                className="w-full text-xs py-2 px-3 border border-gray-300 rounded-lg outline-none focus:border-amber-500 transition-colors shadow-sm disabled:bg-slate-100 disabled:text-slate-500 disabled:cursor-not-allowed font-medium"
-                            />
-                        )}
-                    </div>
+                    <ClienteSearchSelect
+                        onSelect={c => updateConfig('cliente_id', c.id)}
+                        placeholder="Buscar cliente..."
+                        initialName={clienteNombreCompleto}
+                        disabled={!!nombreLlevar || (!onSave && !!clienteId)}
+                    />
                 </div>
 
-                <div className="flex-1 min-h-0 overflow-y-auto p-2.5 bg-gray-50 max-h-[420px] lg:max-h-none">
+                {/* Items con scroll flexible */}
+                <div className="flex-1 min-h-0 overflow-y-auto p-4 bg-gray-50/50 space-y-3">
                     {cart.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center min-h-[160px] text-gray-300">
-                            <ShoppingCartIcon className="w-8 h-8 mb-2" />
-                            <p className="text-xs font-bold">La comanda está vacía</p>
+                        <div className="flex flex-col items-center justify-center h-full text-gray-300 gap-3">
+                            <ShoppingCartIcon className="w-16 h-16 opacity-20" />
+                            <p className="text-sm font-black uppercase tracking-widest text-center">Vacía</p>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-2">
-                            {sorted.map(({ item, idx }) => (
-                                <CartItem
-                                    key={idx}
-                                    item={item}
-                                    idx={idx}
-                                    onEstado={onEstado}
-                                    onCantidad={onCantidad}
-                                    onObs={onObs}
-                                    isEditing={!!item.id_detalle}
-                                    tipoPedido={tipoPedido}
-                                    onUpdateStatus={onUpdateStatus}
-                                />
-                            ))}
-                        </div>
+                        sorted.map(({ item, idx }) => (
+                            <CartItem
+                                key={idx}
+                                item={item}
+                                idx={idx}
+                                onEstado={onEstado}
+                                onCantidad={onCantidad}
+                                onObs={onObs}
+                                isEditing={!!item.id_detalle}
+                                tipoPedido={tipoPedido}
+                                onUpdateStatus={onUpdateStatus}
+                            />
+                        ))
                     )}
                 </div>
 
-                <div className="px-3 py-3 border-t border-gray-200 bg-white shrink-0 flex flex-col gap-3">
+                {/* Footer Fijo */}
+                <div className="shrink-0 px-4 py-5 border-t border-gray-200 bg-white space-y-4 shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
                     <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Total activo</span>
-                        <span className="text-xl font-black text-green-600">S/ {total.toFixed(2)}</span>
+                        <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Total a pagar</span>
+                        <span className="text-3xl font-black text-gray-900 tabular-nums">S/ {total.toFixed(2)}</span>
                     </div>
                     {onSave && (
                         <button
                             type="button"
                             onClick={handleGuardar}
                             disabled={cart.length === 0}
-                            className="w-full bg-gray-900 hover:bg-black text-white font-black uppercase tracking-widest text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-50">
-                            {/* 🔥 TEXTO DINÁMICO */}
-                            {isEditingOrder ? 'Actualizar Comanda' : 'Enviar a Cocina'}
+                            className="w-full bg-gray-900 hover:bg-black disabled:bg-gray-200 disabled:text-gray-400 text-white font-black uppercase tracking-widest text-base py-5 rounded-2xl shadow-xl transition-all active:scale-[0.96]"
+                        >
+                            {isEditingOrder ? 'Actualizar Pedido' : 'Enviar a Cocina'}
                         </button>
                     )}
                 </div>
