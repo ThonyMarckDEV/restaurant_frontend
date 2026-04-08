@@ -6,6 +6,8 @@ import LoginForm from './components/LoginForm';
 import ForgotPasswordForm from './components/ForgotPasswordForm';
 import authService from 'services/authService';
 import { useAuth } from 'context/AuthContext';
+import background from 'assets/img/background.jpg';
+import logo from 'assets/img/logo.png';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -17,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
- const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     
@@ -28,9 +30,7 @@ const Login = () => {
       document.cookie = `access_token=${access_token}; path=/; Secure; SameSite=Strict`;
 
       login(); 
-
       navigate('/home'); 
-
       toast.success(`Bienvenido al sistema`);
       
     } catch (error) {
@@ -41,24 +41,55 @@ const Login = () => {
     }
   };
 
-  const handleForgotPassword = async (e) => { /* lógica genérica */ };
+  const handleForgotPassword = async (e) => { 
+    e.preventDefault();
+    // Lógica genérica de recuperación
+    toast.info("Enlace enviado si el DNI existe.");
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Contenedor Principal */}
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 sm:p-12 border border-gray-100">
+      {/* Capa de fondo con imagen y desenfoque (MODIFICADO) */}
+      <div className="absolute inset-0 z-0">
+        {/* Imagen de fondo del restaurante. Reemplaza con tu imagen real. */}
+        <img 
+          src= {background}// Imagen de activos (ruta ficticia para el usuario)
+          alt="Fondo de restaurante de lujo en blanco y negro"
+          className="w-full h-full object-cover"
+        />
+        {/* Superposición para desenfoque y oscurecimiento. Ajusta la opacidad/desenfoque aquí. */}
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-md"></div> {/* backdrop-blur-md aplica desenfoque a lo que está detrás */}
+      </div>
+
+      {/* Patrón de fondo sutil original (se mantiene sobre el fondo desenfocado) */}
+      <div className="absolute inset-0 opacity-[0.03] z-5" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
+
+      {/* Contenedor Principal (MODIFICADO: añadido z-10 y relative) */}
+      <div className="w-full max-w-lg bg-white rounded-none shadow-2xl p-8 sm:p-12 border-2 border-black relative z-10">
         
-        {/* Header Genérico */}
-        <div className="flex flex-col items-center mb-6">
-          {/* Logo Placeholder: Cuadrado negro simple */}
-          <div className="h-12 w-12 bg-black rounded-lg flex items-center justify-center mb-4 shadow-lg">
-             <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-             </svg>
+        {/* Header - Identidad Formal Cholo */}
+        <div className="flex flex-col items-center mb-8 border-b-2 border-black pb-6">
+          <h2 className="text-sm font-bold text-black tracking-[0.2em] uppercase mb-4">
+            Restaurante SAAS
+          </h2>
+          
+          {/* Isotipo: Reemplazado por imagen de activos (MODIFICADO) */}
+          <div className="h-24 w-24 bg-black flex items-center justify-center mb-4 relative overflow-hidden">
+             {/* Bordes geométricos tipo andino */}
+             <div className="absolute inset-1 border border-white border-dashed opacity-50"></div>
+             <div className="absolute inset-2 border border-white"></div>
+             
+             {/* Imagen de isotipo de activos. Reemplaza con tu logotipo real. */}
+             <img 
+               src={logo} // Imagen de activos (ruta ficticia para el usuario)
+               alt="Logotipo de restaurante llama andino formal"
+               className="h-16 w-16 relative z-10 object-contain"
+             />
           </div>
-          <h1 className="text-sm font-bold text-gray-400 tracking-widest uppercase">
-            Sistema de Gestión Integral
+
+          <h1 className="text-xs font-semibold text-gray-600 tracking-widest uppercase">
+            Gestión Centralizada
           </h1>
         </div>
 
@@ -88,10 +119,11 @@ const Login = () => {
           )}
         </div>
         
-        {/* Footer simple */}
-        <div className="mt-8 text-center">
-            <p className="text-xs text-gray-400">
-                © {new Date().getFullYear()} Empresa S.A.C. Todos los derechos reservados.
+        {/* Footer */}
+        <div className="mt-10 text-center border-t border-gray-200 pt-4">
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider">
+                © {new Date().getFullYear()} Restaurante. Todos los derechos reservados.
+                {/* Puedes añadir la textura aquí si lo prefieres, o mantenerla en el fondo global */}
             </p>
         </div>
       </div>
