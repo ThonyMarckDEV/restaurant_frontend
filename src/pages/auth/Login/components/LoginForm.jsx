@@ -30,7 +30,7 @@ const LoginForm = ({
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="block w-full px-4 py-3 bg-transparent border-2 border-black text-black placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-gray-600 transition-colors sm:text-sm rounded-none"
-            placeholder="Usuario (ej. nombre.apellido)"
+            placeholder="Usuario"
             required
           />
         </div>
