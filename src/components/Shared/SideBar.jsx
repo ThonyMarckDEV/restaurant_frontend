@@ -19,6 +19,7 @@ import { useAuth } from 'context/AuthContext';
 
 // Importamos el logo
 import logo from 'assets/img/logo.png'; 
+import { PiCashRegister } from 'react-icons/pi';
 
 // =======================================================================
 // CONFIGURACIÓN MAESTRA DEL MENÚ
@@ -148,6 +149,15 @@ const MENU_GROUPS = [
         groupName: 'Operaciones & POS',
         items: [
             { 
+                section: 'Cajas', 
+                icon: PiCashRegister,
+                allowedRoles: ['superadmin'],
+                subs: [
+                    { name: 'Listar', link: '/caja/listar' },
+                    { name: 'Agregar', link: '/caja/agregar' },
+                ],
+            },
+            { 
                 section: 'Órdenes (POS)', 
                 icon: ClipboardDocumentListIcon,
                 allowedRoles: ['superadmin','mozo'], 
@@ -162,7 +172,7 @@ const MENU_GROUPS = [
         groupName: 'Caja & Facturación',
         items: [
             { 
-                section: 'Caja (Punto de Venta)', 
+                section: 'Venta (Punto de Venta)', 
                 icon: BanknotesIcon,
                 allowedRoles: ['superadmin', 'cajero'], 
                 subs: [

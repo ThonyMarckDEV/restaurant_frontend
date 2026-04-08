@@ -105,6 +105,11 @@ import UpdateLlevar from 'pages/orden/llevar/Update';
 import VentaIndex from 'pages/venta/Index';
 import VentaStore from 'pages/venta/Store';
 
+//UI CAJAS
+import AgregarCaja from 'pages/caja/Store';
+import EditarCaja from 'pages/caja/Update';
+import ListarCajas from 'pages/caja/Index';
+
 // Utilities
 import ProtectedRouteHome from 'utilities/ProtectedRoutes/ProtectedRouteHome';
 import ProtectedRoute from 'utilities/ProtectedRoutes/ProtectedRoute';
@@ -288,11 +293,20 @@ function AppContent() {
         </Route>
 
         {/* =======================================================
-              MÓDULO: CAJAS Y VENTAS
+              MÓDULO: VENTAS
         ======================================================= */}
         <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin', 'cajero']} />}>
             <Route path="/venta/listar" element={<VentaIndex />} />
             <Route path="/venta/crear" element={<VentaStore />} />
+        </Route>
+
+        {/* =======================================================
+              MÓDULO: CAJAS Y VENTAS
+        ======================================================= */}
+        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin', 'cajero']} />}>
+            <Route path="/caja/agregar" element={<AgregarCaja />} />
+            <Route path="/caja/editar/:id" element={<EditarCaja />} />
+            <Route path="/caja/listar" element={<ListarCajas />} />
         </Route>
 
         
