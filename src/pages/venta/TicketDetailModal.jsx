@@ -3,7 +3,7 @@ import ViewModal from 'components/Shared/Modals/ViewModal';
 import { TicketIcon } from '@heroicons/react/24/outline';
 
 const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
-    // Helper local para el estado, así el modal es 100% independiente
+    // Helper local para el estado
     const getEstadoBadge = (estado) => {
         return estado ? 
             <span className="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full text-[10px] font-black border border-emerald-100 uppercase tracking-wide">Pagado</span> : 
@@ -19,26 +19,31 @@ const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
         >
             {data && (
                 <div className="max-w-md mx-auto bg-white p-2">
+                    {/* Header del Ticket */}
                     <div className="text-center mb-6 border-b-2 border-dashed border-slate-200 pb-6">
                         <TicketIcon className="w-10 h-10 text-slate-300 mx-auto mb-2" />
                         <h2 className="text-2xl font-black text-slate-900 tracking-tight">{data.codigo}</h2>
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">Ticket de Venta</p>
                     </div>
 
+                    {/* Información General */}
                     <div className="grid grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-xl">
                         <div>
                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Cliente</p>
                             <p className="text-xs font-bold text-slate-800 uppercase">
                                 {data.cliente ? (
-                                    data.cliente.datosCliente?.razon_social || 
-                                    `${data.cliente.datosCliente?.nombre || ''} ${data.cliente.datosCliente?.apellidoPaterno || ''}`.trim()
+                                    data.cliente.datos_cliente?.razon_social || 
+                                    `${data.cliente.datos_cliente?.nombre || ''} ${data.cliente.datos_cliente?.apellidoPaterno || ''}`.trim()
                                 ) : 'Público General'}
                             </p>
                         </div>
                         <div>
                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Cajero</p>
                             <p className="text-xs font-bold text-slate-800 uppercase">
-                                {data.cajero?.datosEmpleado?.nombre} {data.cajero?.datosEmpleado?.apellidoPaterno}
+                                {/* 🔥 CORRECCIÓN AQUÍ: Usando datos_empleado según tu JSON */}
+                                {data.cajero?.datos_empleado ? (
+                                    `${data.cajero.datos_empleado.nombre} ${data.cajero.datos_empleado.apellidoPaterno}`
+                                ) : 'S/N'}
                             </p>
                         </div>
                         <div>
@@ -51,6 +56,7 @@ const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
                         </div>
                     </div>
 
+                    {/* Listado de Productos */}
                     <div className="mb-6">
                         <div className="flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-2 mb-3">
                             <span>Cant / Desc</span>
@@ -65,9 +71,9 @@ const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
                                             <span className="font-bold text-slate-800">
                                                 {det.plato?.nombre || det.insumo?.nombre || det.menu?.nombre || det.adicional?.nombre}
                                             </span>
-                                            {det.platosMenu && det.platosMenu.length > 0 && (
+                                            {det.platos_menu && det.platos_menu.length > 0 && (
                                                 <span className="text-[10px] text-slate-500 italic mt-0.5 leading-tight">
-                                                    + {det.platosMenu.map(pm => pm.plato?.nombre).join(', ')}
+                                                    + {det.platos_menu.map(pm => pm.plato?.nombre || pm.nombre).join(', ')}
                                                 </span>
                                             )}
                                             {det.observaciones && (
