@@ -92,16 +92,18 @@ const OrdenForm = ({ cart, setCart, orderConfig = null, updateConfig, onSave, se
                     {/* Botón de volver eliminado de aquí por pedido */}
                 </div>
 
-                {/* Info pedido */}
+               {/* Info pedido */}
                 <div className="shrink-0 p-4 border-b border-gray-100 bg-gray-50 space-y-3">
                     {tipoPedido === 1 ? (
-                        <div className="flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-sm">
-                            <div className="flex items-center gap-2">
-                                <MapPinIcon className="w-5 h-5 text-indigo-500" />
-                                <span className="text-xs font-black text-gray-500 uppercase">Mesa</span>
+                        /* Cambié justify-between por justify-start y añadí gap-3 */
+                        <div className="flex items-center justify-start gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-sm">
+                            <div className="flex items-center gap-2 border-r border-gray-100 pr-3">
+                                <MapPinIcon className="w-5 h-5 text-blue-700" />
+                                <span className="text-xs font-black text-gray-500 uppercase tracking-tight">Mesa</span>
                             </div>
-                            <span className="text-lg font-black text-indigo-600">
-                                {mesaNumero ?? '—'}
+                            {/* Ahora el número aparecerá justo después de la línea divisoria */}
+                            <span className="text-lg font-black text-blue-700">
+                                {mesaNumero}
                             </span>
                         </div>
                     ) : (
