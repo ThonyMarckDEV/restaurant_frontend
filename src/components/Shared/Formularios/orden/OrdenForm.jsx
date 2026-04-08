@@ -29,12 +29,31 @@ const OrdenForm = ({ cart, setCart, orderConfig = null, updateConfig, onSave, se
 
     return (
         <div className="flex flex-col lg:flex-row gap-3 h-[calc(100vh-240px)] min-h-[450px]">
-
-            <button type="button" onClick={() => setShowCart(p => !p)}
-                className="lg:hidden w-full flex items-center justify-center gap-3 bg-gray-900 text-white px-4 py-3 rounded-2xl shadow-sm font-black text-sm active:scale-95 transition-all shrink-0">
-                <ShoppingCartIcon className="w-5 h-5" />
-                {showCart ? 'Ver catálogo' : `Ver Comanda${activeCount > 0 ? ` (${activeCount})` : ''}`}
-            </button>
+          
+            {/* ── Toggle móvil/tablet ── */}
+            <div className="lg:hidden shrink-0 flex rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 p-1 gap-1 mb-2">
+                <button
+                    type="button"
+                    onClick={() => setShowCart(false)}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-black transition-all ${!showCart ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                    Catálogo
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setShowCart(true)}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-black transition-all relative ${showCart ? 'bg-gray-900 text-white shadow-md' : 'text-gray-400'}`}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                    Comanda
+                    {activeCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                            {activeCount}
+                        </span>
+                    )}
+                </button>
+            </div>
 
             {/* Catálogo */}
             <div className={`w-full lg:w-3/5 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden ${showCart ? 'hidden lg:flex' : 'flex'}`}>
