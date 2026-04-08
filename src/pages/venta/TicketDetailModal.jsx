@@ -40,7 +40,6 @@ const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
                         <div>
                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Cajero</p>
                             <p className="text-xs font-bold text-slate-800 uppercase">
-                                {/* 🔥 CORRECCIÓN AQUÍ: Usando datos_empleado según tu JSON */}
                                 {data.cajero?.datos_empleado ? (
                                     `${data.cajero.datos_empleado.nombre} ${data.cajero.datos_empleado.apellidoPaterno}`
                                 ) : 'S/N'}
@@ -63,29 +62,52 @@ const TicketDetailModal = ({ isOpen, onClose, data, isLoading }) => {
                             <span>Total</span>
                         </div>
                         <div className="space-y-3">
-                            {data.orden?.detalles?.map((det, idx) => (
-                                <div key={idx} className="flex justify-between items-start text-sm">
-                                    <div className="flex gap-2">
-                                        <span className="font-mono font-bold text-slate-500">{Math.round(det.cantidad)}</span>
-                                        <div className="flex flex-col">
-                                            <span className="font-bold text-slate-800">
-                                                {det.plato?.nombre || det.insumo?.nombre || det.menu?.nombre || det.adicional?.nombre}
+                            {data.orden?.detalles?.map((det, idx) => {
+                                // 🔥 Lógica para identificar si el plato se canceló
+                                const isCancelado = det.estado === 3;
+
+                                return (
+                                    <div key={idx} className={`flex justify-between items-start text-sm ${isCancelado ? 'opacity-50' : ''}`}>
+                                        <div className="flex gap-2">
+                                            {/* Cantidad con estilo condicional */}
+                                            <span className={`font-mono font-bold ${isCancelado ? 'text-slate-400 line-through decoration-rose-500 decoration-2' : 'text-slate-500'}`}>
+                                                {Math.round(det.cantidad)}
                                             </span>
-                                            {det.platos_menu && det.platos_menu.length > 0 && (
-                                                <span className="text-[10px] text-slate-500 italic mt-0.5 leading-tight">
-                                                    + {det.platos_menu.map(pm => pm.plato?.nombre || pm.nombre).join(', ')}
+                                            
+                                            <div className="flex flex-col">
+                                                {/* Nombre del plato con estilo condicional */}
+                                                <span className={`font-bold ${isCancelado ? 'text-slate-400 line-through decoration-rose-500 decoration-[1.5px]' : 'text-slate-800'}`}>
+                                                    {det.plato?.nombre || det.insumo?.nombre || det.menu?.nombre || det.adicional?.nombre}
                                                 </span>
-                                            )}
-                                            {det.observaciones && (
-                                                <span className="text-[10px] text-amber-600 font-bold italic mt-0.5 leading-tight">
-                                                    Nota: {det.observaciones}
-                                                </span>
-                                            )}
+                                                
+                                                {/* Etiqueta de Cancelado */}
+                                                {isCancelado && (
+                                                    <span className="text-[9px] font-black text-rose-500 uppercase tracking-wider mt-0.5">Cancelado</span>
+                                                )}
+
+                                                {/* Combos/Menús */}
+                                                {det.platos_menu && det.platos_menu.length > 0 && (
+                                                    <span className={`text-[10px] italic mt-0.5 leading-tight ${isCancelado ? 'text-slate-300 line-through decoration-rose-300' : 'text-slate-500'}`}>
+                                                        + {det.platos_menu.map(pm => pm.plato?.nombre || pm.nombre).join(', ')}
+                                                    </span>
+                                                )}
+                                                
+                                                {/* Observaciones */}
+                                                {det.observaciones && (
+                                                    <span className="text-[10px] text-amber-600 font-bold italic mt-0.5 leading-tight">
+                                                        Nota: {det.observaciones}
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
+                                        
+                                        {/* Precio con estilo condicional */}
+                                        <span className={`font-black font-mono ${isCancelado ? 'text-slate-400 line-through decoration-rose-500 decoration-[1.5px]' : 'text-slate-900'}`}>
+                                            S/ {Number(det.subtotal).toFixed(2)}
+                                        </span>
                                     </div>
-                                    <span className="font-black text-slate-900 font-mono">S/ {Number(det.subtotal).toFixed(2)}</span>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
