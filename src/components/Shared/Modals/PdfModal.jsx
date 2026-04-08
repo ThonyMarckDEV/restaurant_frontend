@@ -1,10 +1,22 @@
-import React, { useRef, useEffect } from 'react';
-import { XMarkIcon, ArrowDownTrayIcon, PrinterIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useRef } from 'react';
+import { 
+    XMarkIcon, 
+    PrinterIcon, 
+    MagnifyingGlassPlusIcon, 
+    MagnifyingGlassMinusIcon 
+} from '@heroicons/react/24/outline';
+
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { zoomPlugin } from '@react-pdf-viewer/zoom';
+
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/zoom/lib/styles/index.css';
 
 const PdfModal = ({ isOpen, onClose, title, pdfUrl }) => {
-    const iframeRef = useRef(null);
+    const printFrameRef = useRef(null);
+    const zoomPluginInstance = zoomPlugin();
+    const { ZoomIn, ZoomOut, ZoomPopover } = zoomPluginInstance;
 
-    // Bloquear scroll del body cuando el modal está abierto
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden';
         else document.body.style.overflow = 'unset';
@@ -14,68 +26,68 @@ const PdfModal = ({ isOpen, onClose, title, pdfUrl }) => {
     if (!isOpen) return null;
 
     const handlePrint = () => {
-        if (iframeRef.current) {
-            iframeRef.current.contentWindow.focus();
-            iframeRef.current.contentWindow.print();
+        const iframe = printFrameRef.current;
+        if (iframe) {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
         }
     };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <iframe 
+                ref={printFrameRef}
+                src={pdfUrl}
+                style={{ display: 'none' }} 
+                title="print-frame"
+            />
+
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden border border-slate-700">
-                
+
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+                <div className="flex items-center justify-between px-6 py-3 border-b border-slate-200 bg-slate-50">
                     <div>
-                        <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight">{title}</h3>
-                        <p className="text-xs text-slate-500 font-medium">Vista Previa de Impresión</p>
+                        <h3 className="text-sm font-black text-slate-800 uppercase tracking-tight">{title}</h3>
+                        <p className="text-[10px] text-slate-500 font-medium uppercase">Vista Previa HD</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                        {/* Botón Descargar */}
-                        <a 
-                            href={pdfUrl} 
-                            download={`ticket-${Date.now()}.pdf`}
-                            className="p-2 text-slate-500 hover:bg-white hover:text-blue-600 rounded-lg transition-colors border border-transparent hover:border-slate-200"
-                            title="Descargar PDF"
-                        >
-                            <ArrowDownTrayIcon className="w-5 h-5" />
-                        </a>
-                        
-                        {/* Botón Cerrar */}
-                        <button 
-                            onClick={onClose}
-                            className="p-2 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
-                        >
-                            <XMarkIcon className="w-6 h-6" />
-                        </button>
+
+                    {/* Zoom */}
+                    <div className="flex items-center bg-white border border-slate-200 rounded-lg p-1 shadow-sm gap-1">
+                        <ZoomOut>{(props) => (
+                            <button onClick={props.onClick} className="p-1.5 hover:bg-slate-100 rounded text-slate-600"><MagnifyingGlassMinusIcon className="w-5 h-5" /></button>
+                        )}</ZoomOut>
+                        <div className="px-2 text-xs font-bold text-slate-500 min-w-[50px] text-center"><ZoomPopover /></div>
+                        <ZoomIn>{(props) => (
+                            <button onClick={props.onClick} className="p-1.5 hover:bg-slate-100 rounded text-slate-600"><MagnifyingGlassPlusIcon className="w-5 h-5" /></button>
+                        )}</ZoomIn>
                     </div>
+
+                    <button onClick={onClose} className="p-2 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
+                        <XMarkIcon className="w-6 h-6" />
+                    </button>
                 </div>
 
-                {/* Body - Iframe con el PDF */}
-                <div className="flex-1 bg-slate-100 relative">
-                    <iframe 
-                        ref={iframeRef}
-                        src={pdfUrl} 
-                        type="application/pdf"
-                        className="w-full h-full"
-                        title="Visor de Ticket"
-                    />
+                {/* Body - Visor para pantalla */}
+                <div className="flex-1 bg-slate-200 overflow-hidden relative">
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+                        <Viewer 
+                            fileUrl={pdfUrl}
+                            plugins={[zoomPluginInstance]}
+                            defaultScale={1.6}
+                            imageResourcesScale={2} 
+                        />
+                    </Worker>
                 </div>
 
-                {/* Footer con Acción Principal */}
-                <div className="px-6 py-4 border-t border-slate-200 bg-white flex justify-between items-center">
-                    <span className="text-xs text-slate-400 italic">
-                        * Asegúrese de que su impresora térmica esté conectada.
-                    </span>
-                    <div className="flex gap-3">
-                        <button 
-                            onClick={handlePrint}
-                            className="px-8 py-2.5 bg-black text-white rounded-lg font-bold hover:bg-zinc-800 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
-                        >
-                            <PrinterIcon className="w-5 h-5" />
-                            IMPRIMIR TICKET
-                        </button>
-                    </div>
+                {/* Footer */}
+                <div className="px-6 py-4 border-t border-slate-200 bg-white flex justify-end">
+                    <button 
+                        onClick={handlePrint}
+                        className="px-12 py-3.5 bg-black text-white rounded-xl font-bold hover:bg-zinc-800 transition-all shadow-lg flex items-center gap-2 uppercase text-sm tracking-widest"
+                    >
+                        <PrinterIcon className="w-5 h-5" />
+                        IMPRIMIR AHORA
+                    </button>
                 </div>
             </div>
         </div>
