@@ -71,7 +71,7 @@ const Login = () => {
         {/* Header - Identidad Formal Cholo */}
         <div className="flex flex-col items-center mb-8 border-b-2 border-black pb-6">
           <h2 className="text-sm font-bold text-black tracking-[0.2em] uppercase mb-4">
-            Restaurante SAAS
+             SAAS Restaurante 
           </h2>
           
           {/* Isotipo: Reemplazado por imagen de activos (MODIFICADO) */}
