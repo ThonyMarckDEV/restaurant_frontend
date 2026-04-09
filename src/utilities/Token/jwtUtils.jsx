@@ -57,7 +57,7 @@ export const getClaims = (token) => {
 
 export const getUsername = (token) => jwtDecode(token)?.username ?? null;
 
-export const getFullName = (token) => jwtDecode(token)?.fullName ?? null;
+export const getName= (token) => jwtDecode(token)?.nombre ?? null;
 
 export const getUserRole = (token) => jwtDecode(token)?.rol ?? null;
 
@@ -121,7 +121,7 @@ export const verifyToken = (token) => {
 const jwtUtils = {
   getClaims,
   getUsername,
-  getFullName,
+  getName,
   getUserRole,
   isTokenExpired,
   getTokenExpirationDate,
