@@ -8,13 +8,24 @@ export const index = async (page = 1, filters = {}) => {
   const params = new URLSearchParams({
     page: page,
     search: filters.search || '',
-    estado: filters.estado || '',
-    isPos: filters.isPos ?? '',
+    estado: filters.estado || ''
   });
 
   const response = await fetchWithAuth(`${BASE_URL}/index?${params.toString()}`, { method: 'GET' });
   return handleResponse(response);
 };
+
+export const catalogo = async (page = 1, filters = {}) => {
+  const params = new URLSearchParams({
+    page: page,
+    search: filters.search || '',
+    estado: filters.estado || ''
+  });
+
+  const response = await fetchWithAuth(`${BASE_URL}/catalogo?${params.toString()}`, { method: 'GET' });
+  return handleResponse(response);
+};
+
 
 export const show = async (id) => {
   const response = await fetchWithAuth(`${BASE_URL}/show/${id}`, { method: 'GET' });

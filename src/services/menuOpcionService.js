@@ -15,6 +15,18 @@ export const index = async (page = 1, filters = {}) => {
   return handleResponse(response);
 };
 
+export const catalogo = async (page = 1, filters = {}) => {
+  const params = new URLSearchParams({
+    page: page,
+    menu_id: filters.menu_id || '',
+    plato_id: filters.plato_id || '',
+    disponible: filters.disponible ?? '',
+  });
+  const response = await fetchWithAuth(`${BASE_URL}/catalogo?${params.toString()}`, { method: 'GET' });
+  return handleResponse(response);
+};
+
+
 export const show = async (id) => {
   const response = await fetchWithAuth(`${BASE_URL}/show/${id}`, { method: 'GET' });
   return handleResponse(response);

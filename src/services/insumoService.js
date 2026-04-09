@@ -20,6 +20,22 @@ export const index = async (page = 1, filters = {}) => {
   return handleResponse(response);
 };
 
+export const catalogo = async (page = 1, filters = {}) => {
+  const params = new URLSearchParams({
+    page: page,
+    search: filters.search || '',
+    estado: filters.estado || '',
+    unidad_medida: filters.unidad_medida_id || '',
+    es_inventariable: filters.es_inventariable ?? '',
+    es_venta_directa: filters.es_venta_directa ?? '',
+    almacen_id: filters.almacen_id || ''
+  });
+
+  const response = await fetchWithAuth(`${BASE_URL}/catalogo?${params.toString()}`, { method: 'GET' });
+  return handleResponse(response);
+};
+
+
 export const combobox = async (page = 1, filters = {}) => {
   const params = new URLSearchParams({
     page: page,

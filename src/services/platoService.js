@@ -11,10 +11,21 @@ export const index = async (page = 1, filters = {}) => {
     estado: filters.estado || '',
     categoria_id: filters.categoria_id || '',
     es_para_menu: filters.es_para_menu ?? '',
-    isPos: filters.isPos ?? '',
   });
 
   const response = await fetchWithAuth(`${BASE_URL}/index?${params.toString()}`, { method: 'GET' });
+  return handleResponse(response);
+};
+
+export const catalogo = async (page = 1, filters = {}) => {
+  const params = new URLSearchParams({
+    page: page,
+    search: filters.search || '',
+    estado: filters.estado || '',
+    categoria_id: filters.categoria_id || '',
+  });
+
+  const response = await fetchWithAuth(`${BASE_URL}/catalogo?${params.toString()}`, { method: 'GET' });
   return handleResponse(response);
 };
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, XMarkIcon, HomeModernIcon } from '@heroicons/react/24/outline';
-import { index as getPlatos }       from 'services/platoService';
-import { index as getInsumos }      from 'services/insumoService';
-import { index as getAdicionales }  from 'services/adicionalService';
-import { index as getMenus }        from 'services/menuService';
-import { index as getMenuOpciones } from 'services/menuOpcionService';
+import { catalogo as getPlatos }       from 'services/platoService';
+import { catalogo as getInsumos }      from 'services/insumoService';
+import { catalogo as getAdicionales }  from 'services/adicionalService';
+import { catalogo as getMenus }        from 'services/menuService';
+import { catalogo as getMenuOpciones } from 'services/menuOpcionService';
 import Pagination                   from 'components/Shared/Pagination';
 import CategoriaPlatoSearchSelect   from 'components/Shared/Comboboxes/CategoriaPlatoSearchSelect';
 import AlmacenSearchSelect          from 'components/Shared/Comboboxes/AlmacenSearchSelect';
@@ -32,7 +32,7 @@ const TabLayout = ({ search, setSearch, placeholder, children, page, totalPages,
 
 export const CartaTab = ({ onAdd }) => {
     const [cat, setCat] = useState({ categoria_id: '', categoria_nombre: '' });
-    const l = useCatalogo(getPlatos, { estado: '1', isPos: 'true', categoria_id: cat.categoria_id });
+    const l = useCatalogo(getPlatos, { estado: '1', categoria_id: cat.categoria_id });
     return (
         <div className="flex flex-col h-full gap-2">
             <div className="flex flex-col sm:flex-row gap-2 shrink-0">
@@ -49,7 +49,7 @@ export const CartaTab = ({ onAdd }) => {
 
 export const InsumosTab = ({ onAdd }) => {
     const [almacen, setAlmacen] = useState({ id: '', nombre: '' });
-    const l = useCatalogo(getInsumos, { estado: '1', isPos: 'true', es_venta_directa: 'true', almacen_id: almacen.id, isVentaMode: true });
+    const l = useCatalogo(getInsumos, { estado: '1', es_venta_directa: 'true', almacen_id: almacen.id, isVentaMode: true });
     return (
         <div className="flex flex-col h-full gap-2">
             <div className="bg-slate-50 p-2 rounded-xl border border-slate-200 shrink-0">
@@ -71,7 +71,7 @@ export const InsumosTab = ({ onAdd }) => {
 };
 
 export const AdicionalesTab = ({ onAdd }) => {
-    const l = useCatalogo(getAdicionales, { estado: '1', isPos: 'true' });
+    const l = useCatalogo(getAdicionales, { estado: '1'});
     return (
         <TabLayout search={l.search} setSearch={l.setSearch} placeholder="Buscar adicional..." page={l.page} totalPages={l.totalPages} setPage={l.setPage}>
             <ItemGrid items={l.items} loading={l.loading} onAdd={onAdd} getPrecio={a => a.precio} />
@@ -80,7 +80,7 @@ export const AdicionalesTab = ({ onAdd }) => {
 };
 
 export const MenuTab = ({ onAdd }) => {
-    const l = useCatalogo(getMenus, { estado: '1', isPos: 'true' });
+    const l = useCatalogo(getMenus, { estado: '1' });
     const [building,   setBuilding]   = useState(null);
     const [elegidos,   setElegidos]   = useState([]);
     const [loadingOps, setLoadingOps] = useState(false);
