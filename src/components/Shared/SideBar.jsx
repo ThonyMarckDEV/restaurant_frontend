@@ -14,7 +14,7 @@ import {
     BanknotesIcon,
 } from '@heroicons/react/24/outline'; 
 import ConfirmModal from 'components/Shared/Modals/ConfirmModal';
-import {ArrowUpRightIcon, BeakerIcon, BookOpenIcon, CrossIcon, MapIcon, PackageIcon, ScaleIcon, ShoppingBagIcon, TagIcon, User2Icon, UserSquare2Icon } from 'lucide-react';
+import {ArrowUpRightIcon, BeakerIcon, BookOpenIcon, CrossIcon, MapIcon, PackageIcon, ScaleIcon, Settings, ShoppingBagIcon, TagIcon, User2Icon, UserSquare2Icon } from 'lucide-react';
 import { useAuth } from 'context/AuthContext';
 
 // Importamos el logo
@@ -196,6 +196,15 @@ const MENU_GROUPS = [
                     { name: 'Listar', link: '/proveedor/listar', requiredPermission: 'proveedor.index' },
                     { name: 'Agregar', link: '/proveedor/agregar', requiredPermission: 'proveedor.store' },
                 ],
+            },
+        ]
+    },
+    {
+        groupName: 'Configuracion',
+        items: [
+            { 
+                section: 'Roles y Permisos', icon: Settings,
+                link: '/rol/listar', requiredPermission: 'rol.index'
             },
         ]
     }

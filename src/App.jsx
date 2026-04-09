@@ -114,6 +114,9 @@ import EditarCaja from 'pages/caja/Update';
 import ListarCajas from 'pages/caja/Index';
 import ListarCajaSesiones from 'pages/cajaSesion/Index';
 
+// SETTINGS
+import ListarRoles from 'pages/rol/Index';
+
 // Utilities
 import ProtectedRouteHome from 'utilities/ProtectedRoutes/ProtectedRouteHome';
 import ProtectedRoute from 'utilities/ProtectedRoutes/ProtectedRoute';
@@ -231,6 +234,9 @@ function AppContent() {
         <Route path="/caja/editar/:id" element={<ProtectedRoute requiredPermission="caja.update" element={<EditarCaja />} />} />
         <Route path="/caja/listar" element={<ProtectedRoute requiredPermission="caja.index" element={<ListarCajas />} />} />
         <Route path="/caja/sesiones/listar" element={<ProtectedRoute requiredPermission="cajaSesion.index" element={<ListarCajaSesiones />} />} />
+
+        {/* SETTINGS */}
+        <Route path="/rol/listar" element={<ProtectedRoute requiredPermission="rol.index" element={<ListarRoles />} />} />
 
       </Route>
 
