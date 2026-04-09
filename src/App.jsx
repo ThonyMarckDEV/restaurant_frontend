@@ -102,7 +102,6 @@ import UpdateSalon from 'pages/orden/salon/Update';
 //Llevar
 import IndexLlevar from 'pages/orden/llevar/Index';
 import StoreLlevar from 'pages/orden/llevar/Store';
-import UpdateLlevar from 'pages/orden/llevar/Update';
 
 //UI VENTAS
 import VentaIndex from 'pages/venta/Index';
@@ -222,7 +221,6 @@ function AppContent() {
 
        {/* ORDENES LLEVAR */}
         <Route path="/orden/llevar/crear?" element={<ProtectedRoute requiredPermission="ordenLlevar.store" element={<StoreLlevar />} />} /> 
-        <Route path="/orden/llevar/editar/:id" element={<ProtectedRoute requiredPermission="ordenLlevar.update" element={<UpdateLlevar />} />} />
         <Route path="/orden/llevar/listar" element={<ProtectedRoute requiredPermission="ordenLlevar.index" element={<IndexLlevar />} />} />
 
         {/* VENTAS */}

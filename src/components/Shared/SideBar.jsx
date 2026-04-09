@@ -144,10 +144,18 @@ const MENU_GROUPS = [
                 ],
             },
             { 
-                section: 'Órdenes (POS)', icon: ClipboardDocumentListIcon, 
+                section: 'Órdenes (Salón)', icon: ClipboardDocumentListIcon, 
                 subs: [
                     { name: 'Mapa de Mesas', link: '/orden/mesas', requiredPermission: 'mesa.mapa' },
                     { name: 'Comandas', link: '/orden/salon/listar', requiredPermission: 'ordenSalon.index' },
+                ],
+            },
+            { 
+                // 🔥 Sacamos Llevar de Venta y le damos su propio espacio en Operaciones
+                section: 'Órdenes (Llevar)', icon: ShoppingBagIcon, 
+                subs: [
+                    { name: 'Crear Pedido', link: '/orden/llevar/crear', requiredPermission: 'ordenLlevar.store' },
+                    { name: 'Historial Llevar', link: '/orden/llevar/listar', requiredPermission: 'ordenLlevar.index' },
                 ],
             },
         ] 
@@ -156,10 +164,9 @@ const MENU_GROUPS = [
         groupName: 'Caja & Facturación',
         items: [
             { 
-                section: 'Venta', icon: BanknotesIcon, 
+                // 🔥 La Venta ahora solo tiene lo que le corresponde: Cobrar y ver el historial
+                section: 'Ventas y Cobros', icon: BanknotesIcon, 
                 subs: [
-                    { name: 'Para Llevar', link: '/orden/llevar/crear', requiredPermission: 'ordenLlevar.store' },
-                    { name: 'Historial Llevar', link: '/orden/llevar/listar', requiredPermission: 'ordenLlevar.index' },
                     { name: 'Cobrar Orden', link: '/venta/crear', requiredPermission: 'venta.store' },
                     { name: 'Historial de Ventas', link: '/venta/listar', requiredPermission: 'venta.index' },
                 ],

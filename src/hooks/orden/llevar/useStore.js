@@ -77,7 +77,7 @@ export const useStore = () => {
     // Función que se ejecuta al cerrar el modal del PDF
     const handleClosePdf = () => {
         setPdfData({ isOpen: false, url: null });
-        navigate('/venta/crear'); // RECIÉN AQUÍ REDIRIGE A COBRAR
+        navigate('/orden/llevar/listar'); // RECIÉN AQUÍ REDIRIGE A COBRAR
     };
 
     return { 
