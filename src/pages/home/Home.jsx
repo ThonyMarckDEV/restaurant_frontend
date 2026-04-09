@@ -4,7 +4,8 @@ import {
   User, 
   ShieldCheck, 
   MessageSquare,
-  UserCircle
+  UserCircle,
+  NotepadText
 } from "lucide-react"; 
 
 const Home = () => {
@@ -15,7 +16,7 @@ const Home = () => {
     return {
       name: jwtUtils.getName(token), 
       role: jwtUtils.getUserRole(token),
-      email: jwtUtils.getEmail(token),
+      username: jwtUtils.getUsername(token),
       createdAt: jwtUtils.getCreatedAt(token)
     };
   }, [token]);
@@ -68,11 +69,11 @@ const Home = () => {
 
               <div className="flex items-start gap-4">
                 <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-100 text-slate-400">
-                  <MessageSquare size={18}/>
+                  <NotepadText size={18}/>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mb-0.5">Correo Electrónico</p>
-                  <p className="font-bold text-slate-800 text-sm">{userData?.email || 'usuario@restaurante.com'}</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mb-0.5">Username</p>
+                  <p className="font-bold text-slate-800 text-sm">{userData?.username || 'No disponible'}</p>
                 </div>
               </div>
 
