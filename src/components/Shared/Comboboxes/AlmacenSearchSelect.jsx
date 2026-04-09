@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/almacenService'; 
+import { combobox } from 'services/almacenService'; 
 import { MagnifyingGlassIcon, HomeModernIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const TIPOS_CONFIG = {
@@ -27,7 +27,6 @@ const AlmacenSearchSelect = ({
     const debounceRef = useRef(null); 
 
     useEffect(() => {
-        // 🔥 Sincronización segura con el input
         if (form && typeof form === 'object' && form[fieldNombre]) {
             setInputValue(form[fieldNombre]);
         } else if (typeof form === 'string') {
@@ -54,7 +53,7 @@ const AlmacenSearchSelect = ({
                 estado: '1',
                 ...(isVenta ? { tipo: '4' } : {}) 
             };
-            const response = await index(1, queryParams);
+            const response = await combobox(1, queryParams);
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) {

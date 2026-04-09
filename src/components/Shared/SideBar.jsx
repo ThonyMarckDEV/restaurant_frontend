@@ -29,10 +29,20 @@ const MENU_GROUPS = [
         groupName: 'Principal',
         items: [
             {
-                section: 'Dashboard',
+                section: 'Home',
                 link: '/home',
                 icon: HomeIcon,
-                allowedRoles: ['superadmin', 'admin', 'cocinero', 'cajero','mozo']
+            }
+        ]
+    },
+    {
+        groupName: 'Metricas',
+        items: [
+            {
+                section: 'Dashboard',
+                link: '/dashboard',
+                icon: HomeIcon,
+                requiredPermission: 'dashboard.index'
             }
         ]
     },
@@ -40,50 +50,40 @@ const MENU_GROUPS = [
         groupName: 'Carta & Restaurante',
         items: [
             { 
-                section: 'Categorías Platos', 
-                icon: TagIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Categorías Platos', icon: TagIcon, 
                 subs: [
-                    { name: 'Listar', link: '/categoria-plato/listar' },
-                    { name: 'Agregar', link: '/categoria-plato/agregar' },
+                    { name: 'Listar', link: '/categoria-plato/listar', requiredPermission: 'categoriaPlato.index' },
+                    { name: 'Agregar', link: '/categoria-plato/agregar', requiredPermission: 'categoriaPlato.store' },
                 ],
             },
             { 
-                section: 'Platos', 
-                icon: FireIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Platos', icon: FireIcon, 
                 subs: [
-                    { name: 'Listar', link: '/plato/listar' },
-                    { name: 'Agregar', link: '/plato/agregar' },
+                    { name: 'Listar', link: '/plato/listar', requiredPermission: 'plato.index' },
+                    { name: 'Agregar', link: '/plato/agregar', requiredPermission: 'plato.store' },
                 ],
             },
             { 
-                section: 'Adicionales', 
-                icon: CrossIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Adicionales', icon: CrossIcon, 
                 subs: [
-                    { name: 'Listar', link: '/adicional/listar' },
-                    { name: 'Agregar', link: '/adicional/agregar' },
+                    { name: 'Listar', link: '/adicional/listar', requiredPermission: 'adicional.index' },
+                    { name: 'Agregar', link: '/adicional/agregar', requiredPermission: 'adicional.store' },
                 ],
             },
             { 
-                section: 'Menú Armado', 
-                icon: BookOpenIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Menú Armado', icon: BookOpenIcon, 
                 subs: [
-                    { name: 'Tipos de Menú', link: '/menu/listar' },
-                    { name: 'Nuevo Tipo', link: '/menu/agregar' },
-                    { name: 'Opciones del Día', link: '/menu-opcion/listar' },
-                    { name: 'Armar Menú', link: '/menu-opcion/agregar' },
+                    { name: 'Tipos de Menú', link: '/menu/listar', requiredPermission: 'menu.index' },
+                    { name: 'Nuevo Tipo', link: '/menu/agregar', requiredPermission: 'menu.store' },
+                    { name: 'Opciones del Día', link: '/menu-opcion/listar', requiredPermission: 'menuOpcion.index' },
+                    { name: 'Armar Menú', link: '/menu-opcion/agregar', requiredPermission: 'menuOpcion.store' },
                 ],
             },
             { 
-                section: 'Mesas / Salón', 
-                icon: MapIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Mesas / Salón', icon: MapIcon, 
                 subs: [
-                    { name: 'Listar Mesas', link: '/mesa/listar' },
-                    { name: 'Agregar Mesa', link: '/mesa/agregar' },
+                    { name: 'Listar Mesas', link: '/mesa/listar', requiredPermission: 'mesa.index' },
+                    { name: 'Agregar Mesa', link: '/mesa/agregar', requiredPermission: 'mesa.store' },
                 ],
             },
         ]
@@ -92,56 +92,43 @@ const MENU_GROUPS = [
         groupName: 'Inventario & Logística',
         items: [
             { 
-                section: 'Almacenes', 
-                icon: HomeModernIcon,
-                allowedRoles: ['superadmin'],
+                section: 'Almacenes', icon: HomeModernIcon,
                 subs: [
-                    { name: 'Listar', link: '/almacen/listar' },
-                    { name: 'Agregar', link: '/almacen/agregar' },
-                    { name: 'Stock', link: '/almacen/stock' },
+                    { name: 'Listar', link: '/almacen/listar', requiredPermission: 'almacen.index' },
+                    { name: 'Agregar', link: '/almacen/agregar', requiredPermission: 'almacen.store' },
+                    { name: 'Stock', link: '/almacen/stock', requiredPermission: 'almacenStock.index' },
                 ],
             },
             { 
-                section: 'Insumos', 
-                icon: BeakerIcon,
-                allowedRoles: ['superadmin'],
+                section: 'Insumos', icon: BeakerIcon,
                 subs: [
-                    { name: 'Listar', link: '/insumo/listar' },
-                    { name: 'Agregar', link: '/insumo/agregar' },
+                    { name: 'Listar', link: '/insumo/listar', requiredPermission: 'insumo.index' },
+                    { name: 'Agregar', link: '/insumo/agregar', requiredPermission: 'insumo.store' },
                 ],
             },
             { 
-                section: 'Compras', 
-                icon: ShoppingBagIcon,
-                allowedRoles: ['superadmin'],
+                section: 'Compras', icon: ShoppingBagIcon,
                 subs: [
-                    { name: 'Historial', link: '/compra/listar' },
-                    { name: 'Nueva Compra', link: '/compra/agregar' },
+                    { name: 'Historial', link: '/compra/listar', requiredPermission: 'compra.index' },
+                    { name: 'Nueva Compra', link: '/compra/agregar', requiredPermission: 'compra.store' },
                 ],
             },
             { 
-                section: 'Traspasos', 
-                icon: ArrowsRightLeftIcon,
-                allowedRoles: ['superadmin','mozo'],
+                section: 'Traspasos', icon: ArrowsRightLeftIcon,
                 subs: [
-                    { name: 'Historial Mov.', link: '/traspaso/listar' },
-                    { name: 'Nuevo Traspaso', link: '/traspaso/crear' },
+                    { name: 'Historial Mov.', link: '/traspaso/listar', requiredPermission: 'traspaso.index' },
+                    { name: 'Nuevo Traspaso', link: '/traspaso/crear', requiredPermission: 'traspaso.store' },
                 ],
             },
             { 
-                section: 'Salidas / Consumo', 
-                icon: ArrowUpRightIcon,
-                allowedRoles: ['superadmin'], 
+                section: 'Salidas / Consumo', icon: ArrowUpRightIcon, 
                 subs: [
-                    { name: 'Historial Salidas', link: '/salida/listar' },
-                    { name: 'Registrar Salida', link: '/salida/crear' },
+                    { name: 'Historial Salidas', link: '/salida/listar', requiredPermission: 'salida.index' },
+                    { name: 'Registrar Salida', link: '/salida/crear', requiredPermission: 'salida.store' },
                 ],
             },
             { 
-                section: 'Kardex', 
-                icon: BookOpenIcon, 
-                allowedRoles: ['superadmin'],
-                link: '/kardex/listar',
+                section: 'Kardex', icon: BookOpenIcon, link: '/kardex/listar', requiredPermission: 'kardex.index'
             },
         ]
     },
@@ -149,22 +136,18 @@ const MENU_GROUPS = [
         groupName: 'Operaciones & POS',
         items: [
             { 
-                section: 'Cajas', 
-                icon: PiCashRegister,
-                allowedRoles: ['superadmin'],
+                section: 'Cajas', icon: PiCashRegister,
                 subs: [
-                    { name: 'Listar', link: '/caja/listar' },
-                    { name: 'Agregar', link: '/caja/agregar' },
-                    { name: 'Sesiones', link: '/caja/sesiones/listar' },
+                    { name: 'Listar', link: '/caja/listar', requiredPermission: 'caja.index' },
+                    { name: 'Agregar', link: '/caja/agregar', requiredPermission: 'caja.store' },
+                    { name: 'Sesiones', link: '/caja/sesiones/listar', requiredPermission: 'cajaSesion.index' },
                 ],
             },
             { 
-                section: 'Órdenes (POS)', 
-                icon: ClipboardDocumentListIcon,
-                allowedRoles: ['superadmin','mozo'], 
+                section: 'Órdenes (POS)', icon: ClipboardDocumentListIcon, 
                 subs: [
-                    { name: 'Mapa de Mesas', link: '/orden/mesas' },
-                    { name: 'Comandas', link: '/orden/salon/listar' },
+                    { name: 'Mapa de Mesas', link: '/orden/mesas', requiredPermission: 'orden.index' },
+                    { name: 'Comandas', link: '/orden/salon/listar', requiredPermission: 'orden.index' },
                 ],
             },
         ] 
@@ -173,14 +156,12 @@ const MENU_GROUPS = [
         groupName: 'Caja & Facturación',
         items: [
             { 
-                section: 'Venta (Punto de Venta)', 
-                icon: BanknotesIcon,
-                allowedRoles: ['superadmin', 'cajero'], 
+                section: 'Venta', icon: BanknotesIcon, 
                 subs: [
-                    { name: 'Para Llevar',         link: '/orden/llevar/crear'   },
-                    { name: 'Historial Llevar',    link: '/orden/llevar/listar'  },
-                    { name: 'Cobrar Orden',        link: '/venta/crear'          },
-                    { name: 'Historial de Ventas', link: '/venta/listar'         },
+                    { name: 'Para Llevar', link: '/orden/llevar/crear', requiredPermission: 'orden.store' },
+                    { name: 'Historial Llevar', link: '/orden/llevar/listar', requiredPermission: 'orden.index' },
+                    { name: 'Cobrar Orden', link: '/venta/crear', requiredPermission: 'venta.store' },
+                    { name: 'Historial de Ventas', link: '/venta/listar', requiredPermission: 'venta.index' },
                 ],
             },
         ]
@@ -189,39 +170,31 @@ const MENU_GROUPS = [
         groupName: 'Administración',
         items: [
             { 
-                section: 'Clientes', 
-                icon: User2Icon,
-                allowedRoles: ['superadmin'],
+                section: 'Clientes', icon: User2Icon,
                 subs: [
-                    { name: 'Listar', link: '/cliente/listar' },
-                    { name: 'Agregar', link: '/cliente/agregar' },
+                    { name: 'Listar', link: '/cliente/listar', requiredPermission: 'cliente.index' },
+                    { name: 'Agregar', link: '/cliente/agregar', requiredPermission: 'cliente.store' },
                 ],
             },
             { 
-                section: 'Empleados', 
-                icon: UserSquare2Icon,
-                allowedRoles: ['superadmin'],
+                section: 'Empleados', icon: UserSquare2Icon,
                 subs: [
-                    { name: 'Listar', link: '/empleado/listar' },
-                    { name: 'Agregar', link: '/empleado/agregar' },
+                    { name: 'Listar', link: '/empleado/listar', requiredPermission: 'empleado.index' },
+                    { name: 'Agregar', link: '/empleado/agregar', requiredPermission: 'empleado.store' },
                 ],
             },
             { 
-                section: 'Unidades de Medida', 
-                icon: ScaleIcon,
-                allowedRoles: ['superadmin'],
+                section: 'Unidades de Medida', icon: ScaleIcon,
                 subs: [
-                    { name: 'Listar', link: '/unidad-medida/listar' },
-                    { name: 'Agregar', link: '/unidad-medida/agregar' },
+                    { name: 'Listar', link: '/unidad-medida/listar', requiredPermission: 'unidadMedida.index' },
+                    { name: 'Agregar', link: '/unidad-medida/agregar', requiredPermission: 'unidadMedida.store' },
                 ],
             },
             { 
-                section: 'Proveedores', 
-                icon: PackageIcon, 
-                allowedRoles: ['superadmin'],
+                section: 'Proveedores', icon: PackageIcon, 
                 subs: [
-                    { name: 'Listar', link: '/proveedor/listar' },
-                    { name: 'Agregar', link: '/proveedor/agregar' },
+                    { name: 'Listar', link: '/proveedor/listar', requiredPermission: 'proveedor.index' },
+                    { name: 'Agregar', link: '/proveedor/agregar', requiredPermission: 'proveedor.store' },
                 ],
             },
         ]
@@ -234,26 +207,32 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const [showConfirm, setShowConfirm] = useState(false);
     
     const location = useLocation();
-    const { role: userRole, logout } = useAuth();
+    const { can, logout } = useAuth();
 
     const handleLogout = () => { logout(); setShowConfirm(false); };
     
     const userMenuGroups = useMemo(() => {
-        if (!userRole) return [];
         return MENU_GROUPS.map(group => {
-            const filteredItems = group.items.reduce((acc, item) => {
-                if (!item.allowedRoles.includes(userRole)) return acc;
+            const filteredItems = group.items.map(item => {
+                // Evaluamos si el item tiene submenús
                 if (item.subs) {
-                    const visibleSubs = item.subs.filter(sub => !sub.allowedRoles || sub.allowedRoles.includes(userRole));
-                    if (visibleSubs.length > 0) acc.push({ ...item, subs: visibleSubs });
-                } else {
-                    acc.push(item);
+                    const visibleSubs = item.subs.filter(sub => can(sub.requiredPermission));
+                    return { ...item, subs: visibleSubs };
                 }
-                return acc;
-            }, []);
+                return item;
+            }).filter(item => {
+                // Filtramos los items: Si tenía subs pero ya no quedó ninguno visible, lo ocultamos.
+                if (item.subs) return item.subs.length > 0;
+
+                if (!item.requiredPermission) return true;
+                
+                // Si era un link directo (como Kardex o Dashboard), validamos su propio permiso
+                return can(item.requiredPermission);
+            });
+
             return { ...group, items: filteredItems };
-        }).filter(group => group.items.length > 0); 
-    }, [userRole]);
+        }).filter(group => group.items.length > 0); // Filtramos grupos vacíos
+    }, [can]);
 
     const handleSectionClick = (section) => { 
         if (isCollapsed && window.innerWidth >= 768) {

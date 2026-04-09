@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/insumoService'; 
+import { combobox } from 'services/insumoService'; 
 import { BeakerIcon, XMarkIcon, PlusIcon, ShoppingCartIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const InsumoSearchSelect = ({ 
@@ -41,7 +41,7 @@ const InsumoSearchSelect = ({
             if (isCompra) queryParams.es_inventariable = 'true';
             else if (!isFilter) queryParams.es_inventariable = 'true';
 
-            const response = await index(1, queryParams);
+            const response = await combobox(1, queryParams);
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) { 

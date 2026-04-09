@@ -14,9 +14,21 @@ export const index = async (page = 1, filters = {}) => {
     if (filters.mesa_id) params.append('mesa_id', filters.mesa_id);
     if (filters.fecha) params.append('fecha', filters.fecha);
     if (filters.search) params.append('search', filters.search);
-    if (filters.forCaja) params.append('forCaja', filters.forCaja); 
 
     const response = await fetchWithAuth(`${BASE_URL}/index?${params.toString()}`, { method: 'GET' });
+    return handleResponse(response);
+};
+
+export const combobox = async (page = 1, filters = {}) => {
+    const params = new URLSearchParams();
+    
+    // Agregamos manualmente para asegurar que no se escape nada
+    params.append('page', page);
+    if (filters.estado) params.append('estado', filters.estado);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.forCaja) params.append('forCaja', filters.forCaja); 
+
+    const response = await fetchWithAuth(`${BASE_URL}/combobox?${params.toString()}`, { method: 'GET' });
     return handleResponse(response);
 };
 

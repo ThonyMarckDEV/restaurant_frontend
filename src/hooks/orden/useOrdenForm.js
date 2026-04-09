@@ -36,7 +36,6 @@ export const useCatalogo = (fetchFn, baseParams = {}) => {
         }
     }, [fetchFn, strParams]);
 
-    // Escucha cambios en search o filtros para resetear a página 1
     useEffect(() => {
         clearTimeout(debounce.current);
         debounce.current = setTimeout(() => {
@@ -46,18 +45,12 @@ export const useCatalogo = (fetchFn, baseParams = {}) => {
         return () => clearTimeout(debounce.current);
     }, [search, strParams, load]); 
 
-    // Carga cuando cambia la página (sin debounce)
     useEffect(() => {
         load(page, search);
     }, [page, load, search]);
 
     return { 
-        items, 
-        loading, 
-        page, 
-        setPage, // 🔥 Exportamos setPage directamente para que coincida con lo que pides
-        totalPages, 
-        search, 
+        items, loading, page, setPage, totalPages, search, 
         setSearch: (val) => setSearch(val) 
     };
 };
@@ -66,10 +59,10 @@ export const useOrdenForm = ({ cart, setCart, orderConfig, onSave, setAlert }) =
     const [activeTab, setActiveTab] = useState('carta');
     const [showCart,  setShowCart]  = useState(false);
 
-    const tipoPedido            = orderConfig?.tipo_pedido             || 1;
-    const mesaNumero            = orderConfig?.mesa_numero             || orderConfig?.mesa?.numero || null;
-    const clienteId             = orderConfig?.cliente_id              || null;
-    const nombreLlevar          = orderConfig?.nombre_llevar           || '';
+    const tipoPedido  = orderConfig?.tipo_pedido || 1;
+    const mesaNumero  = orderConfig?.mesa_numero || orderConfig?.mesa?.numero || null;
+    const clienteId   = orderConfig?.cliente_id  || null;
+    const nombreLlevar= orderConfig?.nombre_llevar || '';
     const clienteNombreCompleto = orderConfig?.cliente_nombre_completo || '';
 
     const notificar = (nombre) => {
@@ -105,7 +98,7 @@ export const useOrdenForm = ({ cart, setCart, orderConfig, onSave, setAlert }) =
     };
 
     const onEstado = (i, e) => setCart(c => {
-        const item       = c[i];
+        const item        = c[i];
         const nuevoEstado = Number(e);
         if (nuevoEstado === 3 && !item.id_detalle) return c.filter((_, idx) => idx !== i);
         return c.map((it, idx) => idx === i ? { ...it, estado: nuevoEstado } : it);

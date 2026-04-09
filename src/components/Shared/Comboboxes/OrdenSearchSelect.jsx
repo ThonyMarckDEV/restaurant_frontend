@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/ordenService';
+import { combobox } from 'services/ordenService';
 import { MagnifyingGlassIcon, XMarkIcon, ChevronRightIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 const TIPO_LABEL = { 1: 'Salón', 2: 'Llevar', 3: 'Delivery' };
@@ -22,7 +22,6 @@ const OrdenSearchSelect = ({ onSelect, onReset, disabled, resetTrigger }) => {
     const wrapperRef = useRef(null);
     const debounceRef = useRef(null);
 
-    // 🔥 Limpiar el input desde afuera
     useEffect(() => {
         if (resetTrigger) setInputValue('');
     }, [resetTrigger]);
@@ -38,7 +37,7 @@ const OrdenSearchSelect = ({ onSelect, onReset, disabled, resetTrigger }) => {
     const fetchOrdenes = async (search = '') => {
         setLoading(true);
         try {
-            const res = await index(1, { search, estado: '1', forCaja: 'true' });
+            const res = await combobox(1, { search, estado: '1', forCaja: 'true' });
             setSuggestions(res.data || []);
             setShowSuggestions(true);
         } catch { setSuggestions([]); }

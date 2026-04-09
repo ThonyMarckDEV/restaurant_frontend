@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/clienteService'; 
+import { combobox } from 'services/clienteService'; 
 import { MagnifyingGlassIcon, XMarkIcon, ChevronRightIcon, UserIcon, IdentificationIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 
 const ClienteSearchSelect = ({ onSelect, disabled, initialName = '' }) => {
@@ -12,9 +12,7 @@ const ClienteSearchSelect = ({ onSelect, disabled, initialName = '' }) => {
     const debounceRef = useRef(null); 
 
     useEffect(() => {
-        if (initialName) {
-            setInputValue(initialName);
-        }
+       setInputValue(initialName || '');
     }, [initialName]);
 
     useEffect(() => {
@@ -28,7 +26,7 @@ const ClienteSearchSelect = ({ onSelect, disabled, initialName = '' }) => {
     const fetchClientes = async (searchTerm = '') => {
         setLoading(true);
         try {
-            const response = await index(1, { search: searchTerm, estado: '1' });
+            const response = await combobox(1, { search: searchTerm, estado: '1' });
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) { 

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,9 @@ import Login from 'pages/auth/Login/Login';
 
 // UI HOME
 import Home from 'pages/home/Home';
+
+// UI DASHBOARD
+import Dashboard from 'pages/dashboard/Dashboard';
 
 //UI EMPLEADOS
 import AgregarEmpleado from 'pages/empleado/Store';
@@ -116,202 +119,118 @@ import ProtectedRouteHome from 'utilities/ProtectedRoutes/ProtectedRouteHome';
 import ProtectedRoute from 'utilities/ProtectedRoutes/ProtectedRoute';
 import { AuthProvider } from 'context/AuthContext';
 
+
 function AppContent() {
   return (
     <Routes>
-      {/* 1. LOGIN: Solo accesible si NO estás logueado */}
+      {/* 1. LOGIN */}
       <Route path="/" element={<ProtectedRouteHome element={<Login />} />} />
 
-      {/* 2. LAYOUT GLOBAL: Envuelve todas las rutas privadas */}
-      <Route
-        element={
-          <ProtectedRoute 
-            element={<SidebarLayout />} 
-            allowedRoles={['superadmin', 'admin', 'cajero', 'cocinero','mozo']} 
-          />
-        }
-      >
-        <Route path="/home" element={<Home />} />
+      {/* 2. LAYOUT GLOBAL */}
+      <Route element={<ProtectedRoute element={<SidebarLayout />} />}>
 
-      {/* =======================================================
-            MÓDULO: CLIENTES
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/cliente/agregar" element={<AgregarCliente />} />
-            <Route path="/cliente/editar/:id" element={<EditarCliente />} />
-            <Route path="/cliente/listar" element={<ListarClientes />} />
-        </Route>
-
-
-        {/* =======================================================
-            MÓDULO: EMPLEADOS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/empleado/agregar" element={<AgregarEmpleado />} />
-            <Route path="/empleado/editar/:id" element={<EditarEmpleado />} />
-            <Route path="/empleado/listar" element={<ListarEmpleados />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: UNIDADES DE MEDIDA
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/unidad-medida/agregar" element={<AgregarUnidad />} />
-            <Route path="/unidad-medida/editar/:id" element={<EditarUnidad />} />
-            <Route path="/unidad-medida/listar" element={<ListarUnidades />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: PROVEEDORES
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/proveedor/agregar" element={<AgregarProveedor />} />
-            <Route path="/proveedor/editar/:id" element={<EditarProveedor />} />
-            <Route path="/proveedor/listar" element={<ListarProveedores />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: INSUMOS (MAESTRO)
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/insumo/agregar" element={<AgregarInsumo />} />
-            <Route path="/insumo/editar/:id" element={<EditarInsumo />} />
-            <Route path="/insumo/listar" element={<ListarInsumos />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: ALMACENES (MAESTRO)
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/almacen/agregar" element={<AgregarAlmacen />} />
-            <Route path="/almacen/editar/:id" element={<EditarAlmacen />} />
-            <Route path="/almacen/listar" element={<ListarAlmacenes />} />
-            <Route path="/almacen/stock" element={<StockAlmacen />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: COMPRAS Y ABASTECIMIENTO
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/compra/listar" element={<ListarCompras />} />
-            <Route path="/compra/agregar" element={<RegistrarCompra />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: INVENTARIO Y KARDEX
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/kardex/listar" element={<KardexIndex />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: TRASPASOS ENTRE ALMACENES
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin','mozo']} />}>
-            <Route path="/traspaso/listar" element={<ListarTraspasos />} />
-            <Route path="/traspaso/crear" element={<RegistrarTraspaso />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: SALIDAS (CONSUMO, MERMA, AJUSTES)
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/salida/listar" element={<ListarSalidas />} />
-            <Route path="/salida/crear" element={<RegistrarSalida />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: CATEGORÍAS DE PLATOS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/categoria-plato/agregar" element={<AgregarCategoriaPlato />} />
-            <Route path="/categoria-plato/editar/:id" element={<EditarCategoriaPlato />} />
-            <Route path="/categoria-plato/listar" element={<ListarCategoriasPlatos />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: PLATOS (CARTA Y MENÚ)
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/plato/agregar" element={<AgregarPlato />} />
-            <Route path="/plato/editar/:id" element={<EditarPlato />} />
-            <Route path="/plato/listar" element={<ListarPlatos />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: ADICIONALES
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/adicional/agregar" element={<AgregarAdicional />} />
-            <Route path="/adicional/editar/:id" element={<EditarAdicional />} />
-            <Route path="/adicional/listar" element={<ListarAdicionales />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: MENUS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/menu/agregar" element={<AgregarMenu />} />
-            <Route path="/menu/editar/:id" element={<EditarMenu />} />
-            <Route path="/menu/listar" element={<ListarMenus />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: OPCIONES MENU
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/menu-opcion/agregar" element={<AgregarOpcion />} />
-            <Route path="/menu-opcion/editar/:id" element={<EditarOpcion />} />
-            <Route path="/menu-opcion/listar" element={<ListarOpciones />} />
-        </Route>
-
-        {/* =======================================================
-            MÓDULO: MESAS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/mesa/agregar" element={<AgregarMesa />} />
-            <Route path="/mesa/editar/:id" element={<EditarMesa />} />
-            <Route path="/mesa/listar" element={<ListarMesas />} />
-        </Route>
+        {/* HOME */}
+        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         
-        {/* =======================================================
-            MÓDULO: ORDENES PARA SALON
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin','mozo']} />}>
-            <Route path="/orden/mesas" element={<MesasMap />} />
-            <Route path="/orden/crear/:mesa_id?" element={<StoreSalon  />} /> 
-            <Route path="/orden/salon/:id" element={<UpdateSalon  />} />
-            <Route path="/orden/salon/listar" element={<IndexSalon  />} />
-        </Route>
+        {/* DASHBOARD */}
+        <Route path="/dashboard" element={<ProtectedRoute requiredPermission="dashboard.index" element={<Dashboard />} />} />
 
-        {/* =======================================================
-            MÓDULO: ORDENES PARA LLEVAR
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin','cajero']} />}>
-            <Route path="/orden/llevar/crear?" element={<StoreLlevar  />} /> 
-            <Route path="/orden/llevar/editar/:id" element={<UpdateLlevar  />} />
-            <Route path="/orden/llevar/listar" element={<IndexLlevar  />} />
-        </Route>
+        {/* CLIENTES */}
+        <Route path="/cliente/agregar" element={<ProtectedRoute requiredPermission="cliente.store" element={<AgregarCliente />} />} />
+        <Route path="/cliente/editar/:id" element={<ProtectedRoute requiredPermission="cliente.update" element={<EditarCliente />} />} />
+        <Route path="/cliente/listar" element={<ProtectedRoute requiredPermission="cliente.index" element={<ListarClientes />} />} />
 
-        {/* =======================================================
-              MÓDULO: VENTAS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin', 'cajero']} />}>
-            <Route path="/venta/listar" element={<VentaIndex />} />
-            <Route path="/venta/crear" element={<VentaStore />} />
-        </Route>
+        {/* EMPLEADOS */}
+        <Route path="/empleado/agregar" element={<ProtectedRoute requiredPermission="empleado.store" element={<AgregarEmpleado />} />} />
+        <Route path="/empleado/editar/:id" element={<ProtectedRoute requiredPermission="empleado.update" element={<EditarEmpleado />} />} />
+        <Route path="/empleado/listar" element={<ProtectedRoute requiredPermission="empleado.index" element={<ListarEmpleados />} />} />
 
-        {/* =======================================================
-              MÓDULO: CAJAS
-        ======================================================= */}
-        <Route element={<ProtectedRoute element={<Outlet />} allowedRoles={['superadmin']} />}>
-            <Route path="/caja/agregar" element={<AgregarCaja />} />
-            <Route path="/caja/editar/:id" element={<EditarCaja />} />
-            <Route path="/caja/listar" element={<ListarCajas />} />
-            <Route path="/caja/sesiones/listar" element={<ListarCajaSesiones />} />
-        </Route>
+        {/* UNIDADES DE MEDIDA */}
+        <Route path="/unidad-medida/agregar" element={<ProtectedRoute requiredPermission="unidadMedida.store" element={<AgregarUnidad />} />} />
+        <Route path="/unidad-medida/editar/:id" element={<ProtectedRoute requiredPermission="unidadMedida.update" element={<EditarUnidad />} />} />
+        <Route path="/unidad-medida/listar" element={<ProtectedRoute requiredPermission="unidadMedida.index" element={<ListarUnidades />} />} />
 
+        {/* PROVEEDORES */}
+        <Route path="/proveedor/agregar" element={<ProtectedRoute requiredPermission="proveedor.store" element={<AgregarProveedor />} />} />
+        <Route path="/proveedor/editar/:id" element={<ProtectedRoute requiredPermission="proveedor.update" element={<EditarProveedor />} />} />
+        <Route path="/proveedor/listar" element={<ProtectedRoute requiredPermission="proveedor.index" element={<ListarProveedores />} />} />
+
+        {/* INSUMOS */}
+        <Route path="/insumo/agregar" element={<ProtectedRoute requiredPermission="insumo.store" element={<AgregarInsumo />} />} />
+        <Route path="/insumo/editar/:id" element={<ProtectedRoute requiredPermission="insumo.update" element={<EditarInsumo />} />} />
+        <Route path="/insumo/listar" element={<ProtectedRoute requiredPermission="insumo.index" element={<ListarInsumos />} />} />
+
+        {/* ALMACENES */}
+        <Route path="/almacen/agregar" element={<ProtectedRoute requiredPermission="almacen.store" element={<AgregarAlmacen />} />} />
+        <Route path="/almacen/editar/:id" element={<ProtectedRoute requiredPermission="almacen.update" element={<EditarAlmacen />} />} />
+        <Route path="/almacen/listar" element={<ProtectedRoute requiredPermission="almacen.index" element={<ListarAlmacenes />} />} />
+        <Route path="/almacen/stock" element={<ProtectedRoute requiredPermission="almacenStock.index" element={<StockAlmacen />} />} />
+
+        {/* COMPRAS */}
+        <Route path="/compra/listar" element={<ProtectedRoute requiredPermission="compra.index" element={<ListarCompras />} />} />
+        <Route path="/compra/agregar" element={<ProtectedRoute requiredPermission="compra.store" element={<RegistrarCompra />} />} />
+
+        {/* KARDEX */}
+        <Route path="/kardex/listar" element={<ProtectedRoute requiredPermission="kardex.index" element={<KardexIndex />} />} />
+
+        {/* TRASPASOS */}
+        <Route path="/traspaso/listar" element={<ProtectedRoute requiredPermission="traspaso.index" element={<ListarTraspasos />} />} />
+        <Route path="/traspaso/crear" element={<ProtectedRoute requiredPermission="traspaso.store" element={<RegistrarTraspaso />} />} />
+
+        {/* SALIDAS */}
+        <Route path="/salida/listar" element={<ProtectedRoute requiredPermission="salida.index" element={<ListarSalidas />} />} />
+        <Route path="/salida/crear" element={<ProtectedRoute requiredPermission="salida.store" element={<RegistrarSalida />} />} />
+
+        {/* CATEGORÍAS DE PLATOS */}
+        <Route path="/categoria-plato/agregar" element={<ProtectedRoute requiredPermission="categoriaPlato.store" element={<AgregarCategoriaPlato />} />} />
+        <Route path="/categoria-plato/editar/:id" element={<ProtectedRoute requiredPermission="categoriaPlato.update" element={<EditarCategoriaPlato />} />} />
+        <Route path="/categoria-plato/listar" element={<ProtectedRoute requiredPermission="categoriaPlato.index" element={<ListarCategoriasPlatos />} />} />
+
+        {/* PLATOS */}
+        <Route path="/plato/agregar" element={<ProtectedRoute requiredPermission="plato.store" element={<AgregarPlato />} />} />
+        <Route path="/plato/editar/:id" element={<ProtectedRoute requiredPermission="plato.update" element={<EditarPlato />} />} />
+        <Route path="/plato/listar" element={<ProtectedRoute requiredPermission="plato.index" element={<ListarPlatos />} />} />
+
+        {/* ADICIONALES */}
+        <Route path="/adicional/agregar" element={<ProtectedRoute requiredPermission="adicional.store" element={<AgregarAdicional />} />} />
+        <Route path="/adicional/editar/:id" element={<ProtectedRoute requiredPermission="adicional.update" element={<EditarAdicional />} />} />
+        <Route path="/adicional/listar" element={<ProtectedRoute requiredPermission="adicional.index" element={<ListarAdicionales />} />} />
+
+        {/* MENUS */}
+        <Route path="/menu/agregar" element={<ProtectedRoute requiredPermission="menu.store" element={<AgregarMenu />} />} />
+        <Route path="/menu/editar/:id" element={<ProtectedRoute requiredPermission="menu.update" element={<EditarMenu />} />} />
+        <Route path="/menu/listar" element={<ProtectedRoute requiredPermission="menu.index" element={<ListarMenus />} />} />
+
+        {/* OPCIONES MENU */}
+        <Route path="/menu-opcion/agregar" element={<ProtectedRoute requiredPermission="menuOpcion.store" element={<AgregarOpcion />} />} />
+        <Route path="/menu-opcion/editar/:id" element={<ProtectedRoute requiredPermission="menuOpcion.update" element={<EditarOpcion />} />} />
+        <Route path="/menu-opcion/listar" element={<ProtectedRoute requiredPermission="menuOpcion.index" element={<ListarOpciones />} />} />
+
+        {/* MESAS */}
+        <Route path="/mesa/agregar" element={<ProtectedRoute requiredPermission="mesa.store" element={<AgregarMesa />} />} />
+        <Route path="/mesa/editar/:id" element={<ProtectedRoute requiredPermission="mesa.update" element={<EditarMesa />} />} />
+        <Route path="/mesa/listar" element={<ProtectedRoute requiredPermission="mesa.index" element={<ListarMesas />} />} />
         
+        {/* ORDENES SALON */}
+        <Route path="/orden/mesas" element={<ProtectedRoute requiredPermission="orden.index" element={<MesasMap />} />} />
+        <Route path="/orden/crear/:mesa_id?" element={<ProtectedRoute requiredPermission="orden.store" element={<StoreSalon />} />} /> 
+        <Route path="/orden/salon/:id" element={<ProtectedRoute requiredPermission="orden.update" element={<UpdateSalon />} />} />
+        <Route path="/orden/salon/listar" element={<ProtectedRoute requiredPermission="orden.index" element={<IndexSalon />} />} />
+
+        {/* ORDENES LLEVAR */}
+        <Route path="/orden/llevar/crear?" element={<ProtectedRoute requiredPermission="orden.store" element={<StoreLlevar />} />} /> 
+        <Route path="/orden/llevar/editar/:id" element={<ProtectedRoute requiredPermission="orden.update" element={<UpdateLlevar />} />} />
+        <Route path="/orden/llevar/listar" element={<ProtectedRoute requiredPermission="orden.index" element={<IndexLlevar />} />} />
+
+        {/* VENTAS */}
+        <Route path="/venta/listar" element={<ProtectedRoute requiredPermission="venta.index" element={<VentaIndex />} />} />
+        <Route path="/venta/crear" element={<ProtectedRoute requiredPermission="venta.store" element={<VentaStore />} />} />
+
+        {/* CAJAS */}
+        <Route path="/caja/agregar" element={<ProtectedRoute requiredPermission="caja.store" element={<AgregarCaja />} />} />
+        <Route path="/caja/editar/:id" element={<ProtectedRoute requiredPermission="caja.update" element={<EditarCaja />} />} />
+        <Route path="/caja/listar" element={<ProtectedRoute requiredPermission="caja.index" element={<ListarCajas />} />} />
+        <Route path="/caja/sesiones/listar" element={<ProtectedRoute requiredPermission="cajaSesion.index" element={<ListarCajaSesiones />} />} />
 
       </Route>
 

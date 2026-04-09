@@ -95,29 +95,38 @@ const OrdenForm = ({ cart, setCart, orderConfig = null, updateConfig, onSave, se
                {/* Info pedido */}
                 <div className="shrink-0 p-4 border-b border-gray-100 bg-gray-50 space-y-3">
                     {tipoPedido === 1 ? (
-                        /* Cambié justify-between por justify-start y añadí gap-3 */
                         <div className="flex items-center justify-start gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-sm">
                             <div className="flex items-center gap-2 border-r border-gray-100 pr-3">
                                 <MapPinIcon className="w-5 h-5 text-blue-700" />
                                 <span className="text-xs font-black text-gray-500 uppercase tracking-tight">Mesa</span>
                             </div>
-                            {/* Ahora el número aparecerá justo después de la línea divisoria */}
                             <span className="text-lg font-black text-blue-700">
                                 {mesaNumero}
                             </span>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3">
-                            <UserIcon className="w-5 h-5 text-amber-500" />
-                            <span className="text-xs font-black text-amber-700 uppercase tracking-wide">Pedido para Llevar</span>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3">
+                                <UserIcon className="w-5 h-5 text-amber-500" />
+                                <span className="text-xs font-black text-amber-700 uppercase tracking-wide">Pedido para Llevar</span>
+                            </div>
+                            
+                            <input
+                                type="text"
+                                placeholder="Nombre para llevar"
+                                value={nombreLlevar || ''}
+                                onChange={(e) => updateConfig('nombre_llevar', e.target.value)}
+                                disabled={!!clienteId}
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-gray-900 outline-none transition-all disabled:bg-gray-100 disabled:text-gray-400"
+                            />
                         </div>
                     )}
 
                     <ClienteSearchSelect
                         onSelect={c => updateConfig('cliente_id', c.id)}
-                        placeholder="Buscar cliente..."
+                        placeholder="Buscar cliente registrado..."
                         initialName={clienteNombreCompleto}
-                        disabled={!!nombreLlevar || (!onSave && !!clienteId)}
+                        disabled={!!nombreLlevar || isEditingOrder}
                     />
                 </div>
 

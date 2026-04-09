@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/categoriaPlatoService'; 
+import { combobox } from 'services/categoriaPlatoService'; 
 import { MagnifyingGlassIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const CategoriaPlatoSearchSelect = ({ 
@@ -41,7 +41,7 @@ const CategoriaPlatoSearchSelect = ({
         setLoading(true);
         try {
             const queryParams = { search: searchTerm, estado: '1' };
-            const response = await index(1, queryParams);
+            const response = await combobox(1, queryParams);
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) {

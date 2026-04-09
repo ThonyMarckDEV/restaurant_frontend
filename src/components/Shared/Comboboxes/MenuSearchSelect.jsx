@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/menuService'; 
+import { combobox } from 'services/menuService'; 
 import { MagnifyingGlassIcon, BookOpenIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const MenuSearchSelect = ({ 
@@ -30,7 +30,7 @@ const MenuSearchSelect = ({
     const fetchMenus = async (searchTerm = '') => {
         setLoading(true);
         try {
-            const response = await index(1, { search: searchTerm, estado: '1' });
+            const response = await combobox(1, { search: searchTerm, estado: '1' });
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) { setSuggestions([]); } 

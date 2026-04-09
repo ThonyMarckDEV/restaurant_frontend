@@ -64,8 +64,12 @@ export const useUpdate = () => {
             if (data.estado === 2 || data.estado === 3) { setIsClosed(true); return; }
             setOrdenData(data);
             const newConfig = {
-                tipo_pedido: data.tipo_pedido, mesa_id: data.mesa_id, mesa_numero: data.mesa?.numero || 'S/N',
-                cliente_id: data.cliente_id || null, nombre_llevar: data.nombre_llevar || ''
+                tipo_pedido:             data.tipo_pedido,
+                mesa_id:                 data.mesa_id,
+                mesa_numero:             data.mesa?.numero || 'S/N',
+                cliente_id:              data.cliente_id || null,
+                nombre_llevar:           data.nombre_llevar || '',
+                cliente_nombre_completo: data.cliente_nombre_completo || '',  // ← esto
             };
             setOrderConfig(newConfig);
             configRef.current = newConfig;

@@ -18,7 +18,7 @@ export const index = async (page = 1, filters = {}) => {
 };
 
 export const updateStockMinimo = async (id, stockMinimo) => {
-    const response = await fetchWithAuth(`${BASE_URL}/${id}/stock-minimo`, {
+    const response = await fetchWithAuth(`${BASE_URL}/${id}/updateStockMinimo`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock_minimo: stockMinimo }),

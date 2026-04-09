@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/cajaService';
+import { combobox } from 'services/cajaService';
 import { MagnifyingGlassIcon, ArchiveBoxIcon, XMarkIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 const CajaSearchSelect = ({ 
@@ -32,7 +32,7 @@ const CajaSearchSelect = ({
     const fetchCajas = async (searchTerm = '') => {
         setLoading(true);
         try {
-            const response = await index(1, { search: searchTerm, activo: '1', disponible: 'true' });
+            const response = await combobox(1, { search: searchTerm, activo: '1', disponible: 'true' });
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) { 

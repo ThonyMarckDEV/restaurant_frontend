@@ -51,15 +51,23 @@ const Index = () => {
         },
         
         { 
-            header: 'Ubicación / Mesa', 
-            render: (row) => (
-                <div className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100 w-fit">
-                    <MapPinIcon className="w-4 h-4" />
-                    <span className="font-black uppercase text-xs">
-                        Mesa {row.mesa?.numero || 'S/N'}
-                    </span>
-                </div>
-            ) 
+            header: 'Mesa / Cliente', 
+            render: (row) => {
+                const dc = row.cliente?.datos_cliente;
+                const nombreCliente = dc?.nombre 
+                ? `${dc.nombre} ${dc.apellidoPaterno || ''} ${dc.apellidoMaterno || ''}`.trim().toUpperCase()
+                : (row.cliente ? row.cliente.username.toUpperCase() : 'PÚBLICO GENERAL');
+
+                return (
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100 w-fit">
+                            <MapPinIcon className="w-4 h-4" />
+                            <span className="font-black uppercase text-xs">Mesa {row.mesa?.numero || 'S/N'}</span>
+                        </div>
+                        <span className="text-[11px] font-semibold text-slate-500 pl-1">{nombreCliente}</span>
+                    </div>
+                );
+            }
         },
 
         { 

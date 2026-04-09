@@ -9,6 +9,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [role, setRole] = useState(null);
+    const [permissions, setPermissions] = useState([]);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -22,14 +23,11 @@ export const AuthProvider = ({ children }) => {
 
         try {
             const response = await authService.verifySession();
-
             const userData = response.data || response;
 
             setUser(userData); 
-            
-            const userRole = userData.rol?.nombre || null;
-            
-            setRole(userRole);
+            setRole(userData.rol?.nombre || userData.rol || null);
+            setPermissions(userData.permisos || []);
             setIsAuthenticated(true);
 
         } catch (error) {
@@ -41,12 +39,17 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Helper para limpiar estado
     const handleLogoutState = () => {
         setUser(null);
         setRole(null);
+        setPermissions([]);
         setIsAuthenticated(false);
         setLoading(false);
+    };
+
+    // Función mágica para validar si el usuario tiene un permiso específico
+    const can = (permissionName) => {
+        return permissions.includes(permissionName);
     };
 
     useEffect(() => {
@@ -68,6 +71,8 @@ export const AuthProvider = ({ children }) => {
         <AuthContext.Provider value={{ 
             user, 
             role, 
+            permissions,
+            can,
             isAuthenticated, 
             loading, 
             login, 
@@ -78,4 +83,5 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
+export default AuthContext;
 export const useAuth = () => useContext(AuthContext);
