@@ -41,7 +41,7 @@ const MENU_GROUPS = [
             {
                 section: 'Dashboard',
                 link: '/dashboard',
-                icon: HomeIcon,
+                icon: ArrowUpRightIcon,
                 requiredPermission: 'dashboard.index'
             }
         ]
