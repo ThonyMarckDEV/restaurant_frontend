@@ -214,16 +214,16 @@ function AppContent() {
         <Route path="/mesa/editar/:id" element={<ProtectedRoute requiredPermission="mesa.update" element={<EditarMesa />} />} />
         <Route path="/mesa/listar" element={<ProtectedRoute requiredPermission="mesa.index" element={<ListarMesas />} />} />
         
-        {/* ORDENES SALON */}
-        <Route path="/orden/mesas" element={<ProtectedRoute requiredPermission="orden.index" element={<MesasMap />} />} />
-        <Route path="/orden/crear/:mesa_id?" element={<ProtectedRoute requiredPermission="orden.store" element={<StoreSalon />} />} /> 
-        <Route path="/orden/salon/:id" element={<ProtectedRoute requiredPermission="orden.update" element={<UpdateSalon />} />} />
-        <Route path="/orden/salon/listar" element={<ProtectedRoute requiredPermission="orden.index" element={<IndexSalon />} />} />
+       {/* ORDENES SALON */}
+        <Route path="/orden/mesas" element={<ProtectedRoute requiredPermission="mesa.mapa" element={<MesasMap />} />} />
+        <Route path="/orden/crear/:mesa_id?" element={<ProtectedRoute requiredPermission="ordenSalon.store" element={<StoreSalon />} />} /> 
+        <Route path="/orden/salon/:id" element={<ProtectedRoute requiredPermission="ordenSalon.update" element={<UpdateSalon />} />} />
+        <Route path="/orden/salon/listar" element={<ProtectedRoute requiredPermission="ordenSalon.index" element={<IndexSalon />} />} />
 
-        {/* ORDENES LLEVAR */}
-        <Route path="/orden/llevar/crear?" element={<ProtectedRoute requiredPermission="orden.store" element={<StoreLlevar />} />} /> 
-        <Route path="/orden/llevar/editar/:id" element={<ProtectedRoute requiredPermission="orden.update" element={<UpdateLlevar />} />} />
-        <Route path="/orden/llevar/listar" element={<ProtectedRoute requiredPermission="orden.index" element={<IndexLlevar />} />} />
+       {/* ORDENES LLEVAR */}
+        <Route path="/orden/llevar/crear?" element={<ProtectedRoute requiredPermission="ordenLlevar.store" element={<StoreLlevar />} />} /> 
+        <Route path="/orden/llevar/editar/:id" element={<ProtectedRoute requiredPermission="ordenLlevar.update" element={<UpdateLlevar />} />} />
+        <Route path="/orden/llevar/listar" element={<ProtectedRoute requiredPermission="ordenLlevar.index" element={<IndexLlevar />} />} />
 
         {/* VENTAS */}
         <Route path="/venta/listar" element={<ProtectedRoute requiredPermission="venta.index" element={<VentaIndex />} />} />

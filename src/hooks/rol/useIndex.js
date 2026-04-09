@@ -17,6 +17,9 @@ export const useIndex = () => {
     const [allPermisos, setAllPermisos] = useState([]);
     const [checkedPermisos, setCheckedPermisos] = useState([]); 
     const [isSaving, setIsSaving] = useState(false);
+    
+    // 🔥 NUEVO: Estado para el filtro local de módulos
+    const [moduleFilter, setModuleFilter] = useState('');
 
     const fetchRoles = useCallback(async (page = 1) => {
         setLoading(true);
@@ -40,11 +43,11 @@ export const useIndex = () => {
     const handleManage = async (id) => {
         setIsEditing(true);
         setEditLoading(true);
+        setModuleFilter(''); // Limpiamos el buscador al entrar
         try {
             const res = await show(id);
             setSelectedRole(res.data.rol);
             setAllPermisos(res.data.todos_los_permisos);
-            // Extraemos los IDs de los permisos
             const currentIds = res.data.rol.permisos.map(p => p.id);
             setCheckedPermisos(currentIds);
         } catch (err) {
@@ -65,6 +68,7 @@ export const useIndex = () => {
         setIsEditing(false);
         setSelectedRole(null);
         setCheckedPermisos([]);
+        setModuleFilter(''); // Limpiamos al salir
     };
 
     const handleSave = async () => {
@@ -74,7 +78,8 @@ export const useIndex = () => {
             setAlert({ type: 'success', message: 'Permisos actualizados correctamente.' });
             setIsEditing(false);
             setSelectedRole(null);
-            fetchRoles(paginationInfo.currentPage); // Recargamos para actualizar el contador en la tabla
+            setModuleFilter(''); // Limpiamos al salir
+            fetchRoles(paginationInfo.currentPage);
         } catch (err) {
             setAlert(handleApiError(err, 'Error al guardar permisos'));
         } finally {
@@ -85,6 +90,7 @@ export const useIndex = () => {
     return {
         loading, roles, paginationInfo, filters, setFilters, alert, setAlert, fetchRoles,
         isEditing, editLoading, selectedRole, allPermisos, checkedPermisos, 
-        togglePermission, handleManage, handleSave, handleCancel, isSaving
+        togglePermission, handleManage, handleSave, handleCancel, isSaving,
+        moduleFilter, setModuleFilter // Exportamos el nuevo filtro
     };
 };

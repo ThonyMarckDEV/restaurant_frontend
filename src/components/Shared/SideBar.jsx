@@ -146,8 +146,8 @@ const MENU_GROUPS = [
             { 
                 section: 'Órdenes (POS)', icon: ClipboardDocumentListIcon, 
                 subs: [
-                    { name: 'Mapa de Mesas', link: '/orden/mesas', requiredPermission: 'orden.index' },
-                    { name: 'Comandas', link: '/orden/salon/listar', requiredPermission: 'orden.index' },
+                    { name: 'Mapa de Mesas', link: '/orden/mesas', requiredPermission: 'mesa.mapa' },
+                    { name: 'Comandas', link: '/orden/salon/listar', requiredPermission: 'ordenSalon.index' },
                 ],
             },
         ] 
@@ -158,8 +158,8 @@ const MENU_GROUPS = [
             { 
                 section: 'Venta', icon: BanknotesIcon, 
                 subs: [
-                    { name: 'Para Llevar', link: '/orden/llevar/crear', requiredPermission: 'orden.store' },
-                    { name: 'Historial Llevar', link: '/orden/llevar/listar', requiredPermission: 'orden.index' },
+                    { name: 'Para Llevar', link: '/orden/llevar/crear', requiredPermission: 'ordenLlevar.store' },
+                    { name: 'Historial Llevar', link: '/orden/llevar/listar', requiredPermission: 'ordenLlevar.index' },
                     { name: 'Cobrar Orden', link: '/venta/crear', requiredPermission: 'venta.store' },
                     { name: 'Historial de Ventas', link: '/venta/listar', requiredPermission: 'venta.index' },
                 ],

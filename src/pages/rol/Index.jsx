@@ -3,13 +3,14 @@ import { useIndex } from 'hooks/rol/useIndex';
 import Table from 'components/Shared/Tables/Table';
 import PageHeader from 'components/Shared/Headers/PageHeader';
 import AlertMessage from 'components/Shared/Errors/AlertMessage';
-import { ShieldCheckIcon, AdjustmentsHorizontalIcon, CheckBadgeIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { ShieldCheckIcon, AdjustmentsHorizontalIcon, CheckBadgeIcon, ArrowLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const Index = () => {
     const {
         loading, roles, paginationInfo, alert, setAlert, fetchRoles,
         isEditing, editLoading, selectedRole, allPermisos, 
-        checkedPermisos, togglePermission, handleManage, handleSave, handleCancel, isSaving
+        checkedPermisos, togglePermission, handleManage, handleSave, handleCancel, isSaving,
+        moduleFilter, setModuleFilter // Importamos el filtro
     } = useIndex();
 
     const columns = useMemo(() => [
@@ -47,6 +48,7 @@ const Index = () => {
         }
     ], [handleManage]);
 
+    // Agrupamos TODOS los permisos
     const groupedPermisos = useMemo(() => {
         return allPermisos.reduce((acc, perm) => {
             const [modulo] = perm.nombre.split('.');
@@ -55,6 +57,23 @@ const Index = () => {
             return acc;
         }, {});
     }, [allPermisos]);
+
+    // 🔥 NUEVO: Filtramos los grupos según lo que escriba el usuario
+    const filteredGroupedPermisos = useMemo(() => {
+        if (!moduleFilter) return groupedPermisos;
+        
+        const lowerFilter = moduleFilter.toLowerCase();
+        const filtered = {};
+        
+        Object.entries(groupedPermisos).forEach(([modulo, permisos]) => {
+            // Si el nombre del módulo coincide, lo mostramos
+            if (modulo.toLowerCase().includes(lowerFilter)) {
+                filtered[modulo] = permisos;
+            }
+        });
+        
+        return filtered;
+    }, [groupedPermisos, moduleFilter]);
 
     return (
         <div className="container mx-auto p-6">
@@ -74,7 +93,7 @@ const Index = () => {
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 mt-6 flex flex-col overflow-hidden animate-fade-in">
                     
                     {/* Header de Edición */}
-                    <div className="bg-slate-50 p-5 border-b border-slate-200 flex items-center justify-between">
+                    <div className="bg-slate-50 p-5 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <button 
                                 onClick={handleCancel}
@@ -93,9 +112,23 @@ const Index = () => {
                                 </p>
                             </div>
                         </div>
-                        <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full border border-indigo-200">
-                            {checkedPermisos.length} seleccionados
-                        </span>
+
+                        {/* 🔥 NUEVO: Input buscador y contador */}
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <input 
+                                    type="text"
+                                    placeholder="Buscar módulo..."
+                                    value={moduleFilter}
+                                    onChange={(e) => setModuleFilter(e.target.value)}
+                                    className="pl-9 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:ring-1 focus:ring-black outline-none w-full md:w-64"
+                                />
+                                <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                            </div>
+                            <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg border border-indigo-200 whitespace-nowrap">
+                                {checkedPermisos.length} activos
+                            </span>
+                        </div>
                     </div>
                     
                     {/* Contenido (Grid de Permisos) */}
@@ -107,30 +140,37 @@ const Index = () => {
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {Object.entries(groupedPermisos).map(([modulo, permisos]) => (
-                                    <div key={modulo} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                                        <div className="bg-slate-800 text-white px-4 py-2 flex items-center justify-between">
-                                            <span className="font-black uppercase text-xs tracking-wider">{modulo}</span>
-                                            <CheckBadgeIcon className="w-4 h-4 opacity-50" />
+                                {/* 🔥 Usamos el arreglo filtrado */}
+                                {Object.keys(filteredGroupedPermisos).length > 0 ? (
+                                    Object.entries(filteredGroupedPermisos).map(([modulo, permisos]) => (
+                                        <div key={modulo} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden h-fit">
+                                            <div className="bg-slate-800 text-white px-4 py-2 flex items-center justify-between">
+                                                <span className="font-black uppercase text-xs tracking-wider">{modulo}</span>
+                                                <CheckBadgeIcon className="w-4 h-4 opacity-50" />
+                                            </div>
+                                            <div className="p-3 space-y-2">
+                                                {permisos.map(perm => (
+                                                    <label key={perm.id} className="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                                                        <input 
+                                                            type="checkbox" 
+                                                            checked={checkedPermisos.includes(perm.id)}
+                                                            onChange={() => togglePermission(perm.id)}
+                                                            className="mt-0.5 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+                                                        />
+                                                        <div className="flex flex-col">
+                                                            <span className="text-[11px] font-bold text-slate-700">{perm.nombre}</span>
+                                                            <span className="text-[10px] text-slate-500 leading-tight">{perm.descripcion}</span>
+                                                        </div>
+                                                    </label>
+                                                ))}
+                                            </div>
                                         </div>
-                                        <div className="p-3 space-y-2">
-                                            {permisos.map(perm => (
-                                                <label key={perm.id} className="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-100">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        checked={checkedPermisos.includes(perm.id)}
-                                                        onChange={() => togglePermission(perm.id)}
-                                                        className="mt-0.5 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
-                                                    />
-                                                    <div className="flex flex-col">
-                                                        <span className="text-[11px] font-bold text-slate-700">{perm.nombre}</span>
-                                                        <span className="text-[10px] text-slate-500 leading-tight">{perm.descripcion}</span>
-                                                    </div>
-                                                </label>
-                                            ))}
-                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="col-span-full text-center py-10 text-slate-400">
+                                        <p className="font-bold">No se encontraron módulos para "{moduleFilter}"</p>
                                     </div>
-                                ))}
+                                )}
                             </div>
                         )}
                     </div>
