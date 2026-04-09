@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/proveedorService'; 
+import { combobox } from 'services/proveedorService'; 
 import { MagnifyingGlassIcon, BuildingOfficeIcon, IdentificationIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const ProveedorSearchSelect = ({ form, setForm, disabled, isFilter = false }) => {
@@ -36,7 +36,7 @@ const ProveedorSearchSelect = ({ form, setForm, disabled, isFilter = false }) =>
         try {
             // Siempre buscamos proveedores activos (estado: 1)
             const queryParams = { search: searchTerm, estado: '1' };
-            const response = await index(1, queryParams);
+            const response = await combobox(1, queryParams);
             const lista = response.data || [];
             setSuggestions(lista);
             setShowSuggestions(true);

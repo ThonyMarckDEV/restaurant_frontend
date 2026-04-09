@@ -15,6 +15,16 @@ export const index = async (page = 1, filters = {}) => {
   return handleResponse(response);
 };
 
+export const combobox = async (page = 1, filters = {}) => {
+  const params = new URLSearchParams({
+    page: page,
+    search: filters.search || '',
+  });
+
+  const response = await fetchWithAuth(`${BASE_URL}/combobox?${params.toString()}`, { method: 'GET' });
+  return handleResponse(response);
+};
+
 // GET: Ver uno
 export const show = async (id) => {
   const response = await fetchWithAuth(`${BASE_URL}/show/${id}`, { method: 'GET' });

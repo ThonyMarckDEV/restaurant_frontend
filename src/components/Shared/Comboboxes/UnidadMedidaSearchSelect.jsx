@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// Asegúrate de que la ruta del servicio sea correcta en tu proyecto
-import { index } from 'services/unidadMedidaService'; 
+import { combobox } from 'services/unidadMedidaService'; 
 import { MagnifyingGlassIcon, ScaleIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const UnidadMedidaSearchSelect = ({ 
@@ -8,7 +7,6 @@ const UnidadMedidaSearchSelect = ({
     setForm, 
     disabled, 
     isFilter = false,
-    // Agregamos valores por defecto para que no rompa si no los pasas
     idField = 'unidad_medida_id', 
     nameField = 'unidadMedidaNombre' 
 }) => {
@@ -20,14 +18,13 @@ const UnidadMedidaSearchSelect = ({
     const wrapperRef = useRef(null);
     const debounceRef = useRef(null); 
 
-    // 1. Sincronizar usando los campos dinámicos
     useEffect(() => {
         if (form && form[nameField]) {
             setInputValue(form[nameField]);
         } else if (form && !form[idField]) {
             setInputValue('');
         }
-    }, [form, nameField, idField]); // Dependencias correctas
+    }, [form, nameField, idField]);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -43,7 +40,7 @@ const UnidadMedidaSearchSelect = ({
         setLoading(true);
         try {
             const queryParams = isFilter ? { search: searchTerm } : { search: searchTerm, estado: '1' };
-            const response = await index(1, queryParams);
+            const response = await combobox(1, queryParams);
             const lista = response.data || [];
             setSuggestions(lista);
             setShowSuggestions(true);
@@ -59,7 +56,6 @@ const UnidadMedidaSearchSelect = ({
         const texto = e.target.value;
         setInputValue(texto);
 
-        // 2. Limpiamos dinámicamente
         if (form[idField]) {
             setForm(prev => ({ ...prev, [idField]: '', [nameField]: '' }));
         }
@@ -81,7 +77,6 @@ const UnidadMedidaSearchSelect = ({
         }
     };
 
-    // 3. Guardamos dinámicamente
     const handleSelect = (unidad) => {
         setInputValue(unidad.nombre);
         setForm(prev => ({ 
@@ -92,7 +87,6 @@ const UnidadMedidaSearchSelect = ({
         setShowSuggestions(false);
     };
 
-    // 4. Limpiamos dinámicamente
     const handleClear = (e) => {
         e.stopPropagation();
         setInputValue('');
@@ -102,8 +96,6 @@ const UnidadMedidaSearchSelect = ({
 
     return (
         <div className="relative w-full" ref={wrapperRef}>
-            
-            {/* OJO: Quité el label de aquí porque en InsumoForm ya le pusiste labels propios */}
             
             <div className="relative flex items-center group">
 
@@ -145,7 +137,6 @@ const UnidadMedidaSearchSelect = ({
                                     key={unidad.id}
                                     onClick={() => handleSelect(unidad)}
                                     className={`px-4 py-2.5 cursor-pointer text-sm flex items-center justify-between transition-colors ${
-                                        // 5. Comparamos dinámicamente
                                         form[idField] === unidad.id 
                                         ? 'bg-slate-100 text-black font-bold' 
                                         : 'text-slate-600 hover:bg-slate-50 hover:text-black'
@@ -171,7 +162,6 @@ const UnidadMedidaSearchSelect = ({
 
             {!isFilter && (
                 <div className="mt-2 text-xs h-4">
-                    {/* 6. Mostramos el mensaje dinámicamente */}
                     {form[idField] ? (
                         <span className="text-green-600 font-bold flex items-center gap-1 animate-pulse">
                             ✓ Seleccionado: {form[nameField]}

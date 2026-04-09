@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/platoService'; 
+import { combobox } from 'services/platoService'; 
 import { MagnifyingGlassIcon, FireIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 const PlatoSearchSelect = ({ 
@@ -31,7 +31,7 @@ const PlatoSearchSelect = ({
         setLoading(true);
         try {
             // Para el POS, solo trae platos activos y que se puedan vender
-            const response = await index(1, { search: searchTerm, estado: '1' });
+            const response = await combobox(1, { search: searchTerm, estado: '1' });
             setSuggestions(response.data || []);
             setShowSuggestions(true);
         } catch (error) { setSuggestions([]); } 

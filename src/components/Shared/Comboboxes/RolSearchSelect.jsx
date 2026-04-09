@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { index } from 'services/rolService'; 
+import { combobox } from 'services/rolService'; 
 import { MagnifyingGlassIcon, ShieldCheckIcon, UserGroupIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const RolSearchSelect = ({ form, setForm, disabled, isFilter = false }) => {
@@ -32,7 +32,7 @@ const RolSearchSelect = ({ form, setForm, disabled, isFilter = false }) => {
     const fetchRoles = async (searchTerm = '') => {
         setLoading(true);
         try {
-            const response = await index(1, { search: searchTerm });
+            const response = await combobox(1, { search: searchTerm });
             const lista = response.data || [];
             setSuggestions(lista);
             setShowSuggestions(true);
