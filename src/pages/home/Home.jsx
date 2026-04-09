@@ -106,7 +106,7 @@ const Home = () => {
             {/* CORREO ESCRITO DIRECTO SIN BOTÓN */}
             <div className="relative z-10 mt-auto bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm text-center">
               <p className="text-[10px] text-blue-200 uppercase tracking-widest font-bold mb-1">Envía un mensaje a:</p>
-              <a href="mailto:soporte@tudominio.com" className="font-mono text-lg font-black text-white hover:underline">
+              <a href="mailto:thonymarckdev@gmail.com" className="font-mono text-lg font-black text-white hover:underline">
                 thonymarckdev@gmail.com
               </a>
             </div>
