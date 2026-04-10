@@ -48,16 +48,8 @@ const Index = () => {
         { 
             header: 'Cliente / Identificador', 
             render: (row) => {
-                let nombreClienteFormat = 'Cliente al paso';
-                
-                if (row.nombre_llevar) {
-                    nombreClienteFormat = row.nombre_llevar;
-                } else if (row.cliente?.datos_cliente) {
-                    const { nombre, apellidoPaterno, apellidoMaterno } = row.cliente.datos_cliente;
-                    nombreClienteFormat = `${nombre || ''} ${apellidoPaterno || ''} ${apellidoMaterno || ''}`.trim();
-                } else if (row.cliente?.username) {
-                    nombreClienteFormat = row.cliente.username;
-                }
+                // Cortito, limpio y directo desde tu Backend optimizado
+                const nombreClienteFormat = row.cliente_nombre_completo || row.nombre_llevar || 'Cliente al paso';
                 
                 return (
                     <div className="flex items-center gap-1.5 text-amber-600 bg-amber-50 px-2 py-1 rounded-md border border-amber-100 w-fit">
@@ -84,7 +76,7 @@ const Index = () => {
                         <EyeIcon className="w-5 h-5" />
                     </button>
 
-                    {/* 🔥 LÓGICA DE SEGURIDAD: 
+                    {/* LÓGICA DE SEGURIDAD: 
                         Solo permitimos ANULAR si la orden está ABIERTA (1).
                         Si está Pagada (2) u Anulada (3), el botón desaparece. */}
                     {row.estado === 1 && (

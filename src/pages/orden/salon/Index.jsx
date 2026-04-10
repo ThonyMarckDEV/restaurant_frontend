@@ -53,10 +53,8 @@ const Index = () => {
         { 
             header: 'Mesa / Cliente', 
             render: (row) => {
-                const dc = row.cliente?.datos_cliente;
-                const nombreCliente = dc?.nombre 
-                ? `${dc.nombre} ${dc.apellidoPaterno || ''} ${dc.apellidoMaterno || ''}`.trim().toUpperCase()
-                : (row.cliente ? row.cliente.username.toUpperCase() : 'PÚBLICO GENERAL');
+                // 🔥 AHORA SÍ: Limpio, directo de tu backend optimizado
+                const nombreCliente = row.cliente_nombre_completo || 'PÚBLICO GENERAL';
 
                 return (
                     <div className="flex flex-col gap-1">
@@ -64,7 +62,7 @@ const Index = () => {
                             <MapPinIcon className="w-4 h-4" />
                             <span className="font-black uppercase text-xs">Mesa {row.mesa?.numero || 'S/N'}</span>
                         </div>
-                        <span className="text-[11px] font-semibold text-slate-500 pl-1">{nombreCliente}</span>
+                        <span className="text-[11px] font-semibold text-slate-500 pl-1 uppercase">{nombreCliente}</span>
                     </div>
                 );
             }
@@ -72,7 +70,8 @@ const Index = () => {
 
         { 
             header: 'Mozo', 
-            render: (row) => <span className="text-xs font-bold text-slate-600">{row.nombre_mo_atendio || row.nombre_mozo || 'Sistema'}</span> 
+            // 🔥 También usamos el nombre_mozo optimizado que armaste en el backend
+            render: (row) => <span className="text-xs font-bold text-slate-600">{row.nombre_mozo}</span> 
         },
 
         { header: 'Estado', render: (row) => getEstadoBadge(row.estado) },
